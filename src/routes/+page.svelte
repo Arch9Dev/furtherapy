@@ -6,7 +6,10 @@
 <header class="navbar">
 	<div class="nav-container">
 		<div class="brand">
-			<span class="fur">FUR</span><span class="therapy">THERAPY</span>
+			<!-- svelte-ignore a11y_invalid_attribute -->
+			<a href="#">
+				<img src="src/lib/assets/furtherapy_trans.png" alt="Furtherapy logo" />
+			</a>
 		</div>
 
 		<nav class="nav-links">
@@ -25,7 +28,7 @@
 			<span class="fur">FUR</span>
 			<span class="therapy">THERAPY</span>
 		</h1>
-		<p class="subtitle">canine massage and bodywork</p>
+		<p class="subtitle">Canine massage and bodywork</p>
 	</div>
 </section>
 
@@ -66,7 +69,7 @@
 
 	/* ----------------- NAVBAR ----------------- */
 	.navbar {
-		background: #111;
+		background: #000000;
 		height: 64px;
 		display: flex;
 		align-items: center;
@@ -83,18 +86,15 @@
 	}
 
 	.brand {
-		color: #fff;
-		font-size: 1.2rem;
-		letter-spacing: 1px;
+		display: flex;
+		align-items: center;
 	}
 
-	.brand .fur {
-		font-weight: 800;
-	}
-
-	.brand .therapy {
-		font-weight: 300;
-		margin-left: 2px;
+	.brand img {
+		height: 42px; 
+		width: auto;
+		object-fit: contain;
+		display: block;
 	}
 
 	.nav-links a {
