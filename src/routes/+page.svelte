@@ -1,5 +1,21 @@
 <script>
-	const navLinks = ['Home', 'About', 'Services', 'Education', 'Contact'];
+	const navLinks = [
+		{ name: 'Home', route: '/' },
+		{ name: 'About', route: '/about' },
+		{ name: 'Services', route: '/services' },
+		{ name: 'Education', route: '/education' },
+		{ name: 'Contact', route: '/contact' }
+	];
+
+	// Set this to the current page route
+	const currentRoute = '/';
+
+	/**
+	 * @param {string} route
+	 */
+	function navigateTo(route) {
+		window.location.href = route;
+	}
 </script>
 
 <!-- NAV BAR -->
@@ -14,15 +30,19 @@
 
 		<nav class="nav-links">
 			{#each navLinks as link}
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a href="#">{link}</a>
+				<button 
+					class:active={link.route === currentRoute}
+					on:click={() => navigateTo(link.route)}
+				>
+					{link.name}
+				</button>
 			{/each}
 		</nav>
 	</div>
 </header>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="home">
 	<div class="hero-inner">
 		<h1 class="title">Because your dog deserves to feel their best.</h1>
 		<p class="subtitle">Canine massage and bodywork</p>
@@ -35,7 +55,7 @@
 </section>
 
 <!-- PRICING -->
-<section class="pricing">
+<section class="pricing" id="services">
 	<div class="pricing-inner">
 		<h1 class="title">Pricing Guide</h1>
 
@@ -84,7 +104,7 @@
 </section>
 
 <!-- PLACEHOLDER SECTION -->
-<section class="hero">
+<section class="hero" id="about">
 	<div class="hero-inner">
 		<h1 class="title">PLACEHOLDER</h1>
 		<p class="subtitle">TEXT</p>
@@ -128,16 +148,23 @@
 		height: 45px;
 	}
 
-	.nav-links a {
+	.nav-links button {
 		color: #fff;
-		text-decoration: none;
+		background: none;
+		border: none;
+		cursor: pointer;
 		font-weight: 800;
 		font-size: 1.5rem;
 		margin-left: 1.5rem;
+		font-family: inherit;
 	}
 
-	.nav-links a:hover {
+	.nav-links button:hover {
 		text-decoration: underline;
+	}
+
+	.nav-links button.active {
+		color: #1f1f1f;
 	}
 
 	/* ----------------- HERO ----------------- */
