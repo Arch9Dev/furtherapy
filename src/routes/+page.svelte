@@ -1,5 +1,5 @@
 <script>
-	const navLinks = ['Home', 'About', 'Services', 'Gallery', 'FAQ', 'Contact'];
+	const navLinks = ['Home', 'About', 'Services', 'Education', 'Contact'];
 </script>
 
 <!-- NAV BAR -->
@@ -8,7 +8,7 @@
 		<div class="brand">
 			<!-- svelte-ignore a11y_invalid_attribute -->
 			<a href="#">
-				<img src="src/lib/assets/furtherapy_trans.png" alt="Furtherapy logo" />
+				<img src="logo_white.png" alt="Furtherapy Logo white" />
 			</a>
 		</div>
 
@@ -24,10 +24,7 @@
 <!-- HERO -->
 <section class="hero">
 	<div class="hero-inner">
-		<h1>
-			<span class="fur">FUR</span>
-			<span class="therapy">THERAPY</span>
-		</h1>
+		<h1 class="title">HOOK TEXT</h1>
 		<p class="subtitle">Canine massage and bodywork</p>
 	</div>
 </section>
@@ -38,8 +35,19 @@
 	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
 </section>
 
-<!-- FLOATING CHAT -->
-<button class="chat">💬 Let’s Chat</button>
+<section class="hero">
+	<div class="hero-inner">
+		<h1 class="title">PRICING GUIDE</h1>
+		<p class="subtitle">TEXT</p>
+	</div>
+</section>
+
+<section class="hero">
+	<div class="hero-inner">
+		<h1 class="title">PLACEHOLDER</h1>
+		<p class="subtitle">TEXT</p>
+	</div>
+</section>
 
 <style global>
 	/* ----------------- RESET ----------------- */
@@ -52,25 +60,22 @@
 	:global(body) {
 		font-family:
 			system-ui,
-			-apple-system,
-			BlinkMacSystemFont,
 			'Segoe UI',
-			Roboto,
-			Oxygen,
-			Ubuntu,
-			Cantarell,
 			'Open Sans',
 			'Helvetica Neue',
 			sans-serif;
-		background: #0b0d14;
+		background: #1f1f1f;
 		color: #ffffff;
 		line-height: 1.65;
+		margin: 0;
+		padding: 0; 
+
 	}
 
 	/* ----------------- NAVBAR ----------------- */
 	.navbar {
-		background: #000000;
-		height: 64px;
+		background: #f68b1f;
+		height: 80px;
 		display: flex;
 		align-items: center;
 	}
@@ -91,7 +96,7 @@
 	}
 
 	.brand img {
-		height: 42px; 
+		height: 45px; 
 		width: auto;
 		object-fit: contain;
 		display: block;
@@ -100,7 +105,8 @@
 	.nav-links a {
 		color: #fff;
 		text-decoration: none;
-		font-size: 0.9rem;
+		font-weight: 800;
+		font-size: 1.5rem;
 		margin-left: 1.5rem;
 	}
 
@@ -110,7 +116,6 @@
 
 	/* ----------------- HERO ----------------- */
 	.hero {
-		background: #f68b1f;
 		height: 420px;
 		display: flex;
 		align-items: center;
@@ -122,17 +127,7 @@
 		padding: 0 2rem;
 	}
 
-	.hero h1 {
-		font-size: 6rem;
-		font-weight: 800;
-		line-height: 1;
-		letter-spacing: 2px;
-	}
 
-	.hero h1 .therapy {
-		font-weight: 300;
-		margin-left: 0.5rem;
-	}
 
 	.subtitle {
 		font-size: 2rem;
@@ -158,24 +153,6 @@
 		color: #555;
 	}
 
-	/* ----------------- CHAT BUTTON ----------------- */
-	.chat {
-		position: fixed;
-		right: 1.5rem;
-		bottom: 1.5rem;
-		background: #e06f00;
-		color: white;
-		border: none;
-		padding: 0.9rem 1.2rem;
-		border-radius: 6px;
-		font-size: 0.9rem;
-		cursor: pointer;
-		box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-	}
-
-	.chat:hover {
-		background: #c86100;
-	}
 
 	/* ----------------- RESPONSIVE ----------------- */
 	@media (max-width: 768px) {
@@ -185,10 +162,6 @@
 
 		.hero {
 			height: 320px;
-		}
-
-		.hero h1 {
-			font-size: 3.5rem;
 		}
 
 		.subtitle {
