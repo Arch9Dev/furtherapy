@@ -1,4 +1,4 @@
-<script>
+<script lang=ts>
 	const navLinks = [
 		{ name: 'Home', route: '/' },
 		{ name: 'About', route: '/about' },
@@ -13,8 +13,41 @@
 	/**
 	 * @param {string} route
 	 */
-	function navigateTo(route) {
+	function navigateTo(route: string) {
 		window.location.href = route;
+	}
+
+	let showModal = false;
+	let modalMessage = '';
+	let isError = false;
+
+	async function handleSubmit(event: SubmitEvent) {
+		const form = event.currentTarget as HTMLFormElement;
+		const formData = new FormData(form);
+
+		try {
+			const response = await fetch(form.action, {
+				method: 'POST',
+				body: formData,
+				headers: {
+					Accept: 'application/json'
+				}
+			});
+
+			if (response.ok) {
+				modalMessage = 'Thank you! Your message has been sent.';
+				isError = false;
+				form.reset();
+			} else {
+				modalMessage = 'Oops! Something went wrong. Please try again.';
+				isError = true;
+			}
+		} catch {
+			modalMessage = 'Network error. Please check your connection.';
+			isError = true;
+		}
+
+		showModal = true;
 	}
 </script>
 
@@ -30,10 +63,7 @@
 
 		<nav class="nav-links">
 			{#each navLinks as link}
-				<button 
-					class:active={link.route === currentRoute}
-					on:click={() => navigateTo(link.route)}
-				>
+				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
 					{link.name}
 				</button>
 			{/each}
@@ -98,16 +128,59 @@
 		</div>
 
 		<div class="pricing-cta">
-			<a href="#contact" class="btn-primary">Book Now</a>
+			<a href="/booking" class="btn-primary">Book Now</a>
 		</div>
 	</div>
 </section>
 
-<!-- PLACEHOLDER SECTION -->
-<section class="hero" id="about">
+<!-- IMAGE SECTION -->
+<section class="hero-image">
+	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
+</section>
+
+<!-- HERO -->
+<section class="hero" id="home">
 	<div class="hero-inner">
-		<h1 class="title">PLACEHOLDER</h1>
-		<p class="subtitle">TEXT</p>
+		<h1 class="title">Education.</h1>
+		<p class="subtitle">Placeholder Text</p>
+	</div>
+</section>
+
+<!-- IMAGE SECTION -->
+<section class="hero-image">
+	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+	<div class="contact-inner">
+		<h1 class="title">Get in Touch</h1>
+		<p class="subtitle">Book a session or ask a question</p>
+
+		<form
+			action="https://formspree.io/f/maqqngvd"
+			method="POST"
+			class="contact-form"
+			on:submit|preventDefault={handleSubmit}
+		>
+			<input type="text" name="name" placeholder="Your Name" required />
+
+			<input type="text" name="contact" placeholder="Email or Phone Number" required />
+
+			<textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+			<button type="submit" class="btn-primary"> Send Message </button>
+		</form>
+		{#if showModal}
+			<div class="modal-backdrop">
+				<div class="modal">
+					<h2>{isError ? 'Error' : 'Success'}</h2>
+					<p>{modalMessage}</p>
+
+					<button class="btn-primary" on:click={() => (showModal = false)}> Close </button>
+				</div>
+			</div>
+		{/if}
 	</div>
 </section>
 
@@ -292,6 +365,44 @@
 	.btn-primary:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 8px 20px rgba(246, 139, 31, 0.4);
+	}
+
+	/* ----------------- CONTACT ----------------- */
+	.contact {
+		padding: 5rem 2rem;
+		background: #1f1f1f;
+	}
+
+	.contact-inner {
+		max-width: 700px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.contact-form {
+		margin-top: 3rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.2rem;
+	}
+
+	.contact-form input,
+	.contact-form textarea {
+		padding: 1rem 1.2rem;
+		border-radius: 10px;
+		border: none;
+		font-size: 1rem;
+		font-family: inherit;
+	}
+
+	.contact-form textarea {
+		resize: vertical;
+		min-height: 140px;
+	}
+
+	.contact-form input:focus,
+	.contact-form textarea:focus {
+		outline: 2px solid #f68b1f;
 	}
 
 	/* ----------------- RESPONSIVE ----------------- */
