@@ -1,4 +1,7 @@
-<script lang=ts>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
 	const navLinks = [
 		{ name: 'Home', route: '/' },
 		{ name: 'About', route: '/about' },
@@ -7,14 +10,10 @@
 		{ name: 'Contact', route: '/contact' }
 	];
 
-	// Set this to the current page route
-	const currentRoute = '/';
+	$: currentRoute = $page.url.pathname;
 
-	/**
-	 * @param {string} route
-	 */
 	function navigateTo(route: string) {
-		window.location.href = route;
+		goto(route);
 	}
 
 	let showModal = false;
@@ -29,9 +28,7 @@
 			const response = await fetch(form.action, {
 				method: 'POST',
 				body: formData,
-				headers: {
-					Accept: 'application/json'
-				}
+				headers: { Accept: 'application/json' }
 			});
 
 			if (response.ok) {
@@ -55,8 +52,7 @@
 <header class="navbar">
 	<div class="nav-container">
 		<div class="brand">
-			<!-- svelte-ignore a11y_invalid_attribute -->
-			<a href="#">
+			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
 				<img src="logo_white.png" alt="Furtherapy Logo white" />
 			</a>
 		</div>
@@ -128,27 +124,9 @@
 		</div>
 
 		<div class="pricing-cta">
-			<a href="/booking" class="btn-primary">Book Now</a>
+			<a href="/booking" on:click|preventDefault={() => navigateTo('/booking')} class="btn-primary">Book Now</a>
 		</div>
 	</div>
-</section>
-
-<!-- IMAGE SECTION -->
-<section class="hero-image">
-	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
-</section>
-
-<!-- HERO -->
-<section class="hero" id="home">
-	<div class="hero-inner">
-		<h1 class="title">Education.</h1>
-		<p class="subtitle">Placeholder Text</p>
-	</div>
-</section>
-
-<!-- IMAGE SECTION -->
-<section class="hero-image">
-	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
 </section>
 
 <!-- CONTACT -->
@@ -164,25 +142,23 @@
 			on:submit|preventDefault={handleSubmit}
 		>
 			<input type="text" name="name" placeholder="Your Name" required />
-
 			<input type="text" name="contact" placeholder="Email or Phone Number" required />
-
 			<textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-
 			<button type="submit" class="btn-primary"> Send Message </button>
 		</form>
+
 		{#if showModal}
 			<div class="modal-backdrop">
 				<div class="modal">
 					<h2>{isError ? 'Error' : 'Success'}</h2>
 					<p>{modalMessage}</p>
-
 					<button class="btn-primary" on:click={() => (showModal = false)}> Close </button>
 				</div>
 			</div>
 		{/if}
 	</div>
 </section>
+
 
 <style global>
 	/* ----------------- RESET ----------------- */
