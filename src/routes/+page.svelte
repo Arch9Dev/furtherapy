@@ -10,6 +10,14 @@
 		{ name: 'Contact', route: '/contact' }
 	];
 
+	const slides = [
+		'Image 1',
+		'Image 2',
+		'Image 3',
+		'Image 4',
+		'Image 5'
+	];
+
 	$: currentRoute = $page.url.pathname;
 
 	function navigateTo(route: string) {
@@ -75,9 +83,22 @@
 	</div>
 </section>
 
-<!-- IMAGE SECTION -->
+<!-- IMAGE SLIDER SECTION -->
 <section class="hero-image">
-	<div class="image-placeholder">IMAGE PLACEHOLDER</div>
+	<div class="slider">
+		<div class="slide-track">
+			{#each slides as text}
+				<div class="slide">
+					<div class="slide-content">{text}</div>
+				</div>
+			{/each}
+			{#each slides as text}
+				<div class="slide">
+					<div class="slide-content">{text}</div>
+				</div>
+			{/each}
+		</div>
+	</div>
 </section>
 
 <!-- PRICING -->
@@ -124,7 +145,9 @@
 		</div>
 
 		<div class="pricing-cta">
-			<a href="/booking" on:click|preventDefault={() => navigateTo('/booking')} class="btn-primary">Book Now</a>
+			<a href="/booking" on:click|preventDefault={() => navigateTo('/booking')} class="btn-primary"
+				>Book Now</a
+			>
 		</div>
 	</div>
 </section>
@@ -158,7 +181,6 @@
 		{/if}
 	</div>
 </section>
-
 
 <style global>
 	/* ----------------- RESET ----------------- */
@@ -218,9 +240,10 @@
 
 	/* ----------------- HERO ----------------- */
 	.hero {
-		height: 250px;
+		height: 350px;
 		display: flex;
 		align-items: center;
+		background: #2a2a2a;
 	}
 
 	.hero-inner {
@@ -240,20 +263,63 @@
 		height: 320px;
 	}
 
-	.image-placeholder {
-		height: 100%;
-		background: #ccc;
+	/* ----------------- IMAGE SLIDER ----------------- */
+	.hero-image {
+		height: 340px;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		background: #1f1f1f;
+	}
+
+	.slider {
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.slide-track {
+		display: flex;
+		width: calc(320px * 10); /* 5 slides × 2 */
+		animation: scroll 25s linear infinite;
+	}
+
+	.slide {
+		width: 320px;
+		height: 320px;
+		flex-shrink: 0;
+		margin-right: 2rem;
+		border-radius: 16px;
+		background: #2a2a2a;
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #555;
-		font-weight: bold;
-		letter-spacing: 2px;
+	}
+
+	.slide-content {
+		color: #f68b1f;
+		font-weight: 800;
+		font-size: 1.2rem;
+		text-align: center;
+		padding: 1rem;
+		letter-spacing: 1px;
+	}
+
+	/* Animation */
+	@keyframes scroll {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-320px * 5 - 2rem * 5));
+		}
 	}
 
 	/* ----------------- PRICING ----------------- */
 	.pricing {
 		padding: 5rem 2rem;
+		background: #2a2a2a;
 	}
 
 	.pricing-inner {
