@@ -42,11 +42,17 @@
 </header>
 
 
-<!-- PLACEHOLDER SECTION -->
-<section class="hero" id="about">
+<!-- EDUCATION SECTION -->
+<section class="hero" id="education">
 	<div class="hero-inner">
-		<h1 class="title">PLACEHOLDER</h1>
-		<p class="subtitle">TEXT</p>
+		<h1 class="title">Education & Mentorship</h1>
+		<div class="content">
+			<p>At FurTherapy, I am committed not only to supporting dogs through professional bodywork, but also to sharing my knowledge and helping you grow confidence within the canine wellness community across New Zealand.</p>
+			
+			<p>I provide education and mentorship for aspiring canine massage practitioners, therapy professionals, and dedicated dog owners who want to better understand canine anatomy, movement, comfort, and therapeutic touch. Through guided learning, practical advice, and one-to-one mentorship, my goal is to empower you with safe, ethical, and effective techniques that improve canine wellbeing.</p>
+			
+			<p>Whether you are just beginning or looking to expand your professional skillset, I offer supportive, accessible education tailored for the New Zealand community.</p>
+		</div>
 	</div>
 </section>
 
@@ -108,9 +114,10 @@
 
 	/* ----------------- HERO ----------------- */
 	.hero {
-		height: 250px;
+		min-height: 250px;
 		display: flex;
 		align-items: center;
+		padding: 3rem 0;
 	}
 
 	.hero-inner {
@@ -119,13 +126,22 @@
 		padding: 0 2rem;
 	}
 
-	.subtitle {
-		font-size: 2rem;
-		margin-top: 1rem;
-		font-weight: 300;
+	.title {
+		font-size: 2.5rem;
+		margin-bottom: 2rem;
+		font-weight: 700;
 	}
 
-	
+	.content p {
+		font-size: 1.125rem;
+		margin-bottom: 1.5rem;
+		font-weight: 300;
+		line-height: 1.8;
+	}
+
+	.content p:last-child {
+		margin-bottom: 0;
+	}
 
 	/* ----------------- RESPONSIVE ----------------- */
 	@media (max-width: 768px) {
@@ -133,10 +149,13 @@
 			display: none;
 		}
 
-		.subtitle {
-			font-size: 1.3rem;
+		.title {
+			font-size: 1.8rem;
+			margin-bottom: 1.5rem;
 		}
 
-
+		.content p {
+			font-size: 1rem;
+		}
 	}
 </style>
