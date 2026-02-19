@@ -10,13 +10,7 @@
 		{ name: 'Contact', route: '/contact' }
 	];
 
-	const slides = [
-		'Image 1',
-		'Image 2',
-		'Image 3',
-		'Image 4',
-		'Image 5'
-	];
+	const slides = ['Image 1', 'Image 2', 'Image 3', 'Image 4', 'Image 5'];
 
 	$: currentRoute = $page.url.pathname;
 
@@ -143,12 +137,28 @@
 				Pre-pay five follow-up sessions and receive a discounted package rate.
 			</div>
 		</div>
+	</div>
+</section>
 
-		<div class="pricing-cta">
-			<a href="/booking" on:click|preventDefault={() => navigateTo('/booking')} class="btn-primary"
-				>Book Now</a
-			>
+<!-- TRAVEL -->
+<section class="travel" id="services">
+	<div class="travel-inner">
+		<h1 class="title">Travel</h1>
+
+		<div class="travel-table">
+			<div class="travel-header">
+				<span>Travel Guide</span>
+			</div>
 		</div>
+
+		<div class="travel-row">
+			<span>THIS IS TRAVEL</span>
+		</div>
+	</div>
+	<div class="book-cta">
+		<a href="/booking" on:click|preventDefault={() => navigateTo('/booking')} class="btn-primary"
+			>Book Now</a
+		>
 	</div>
 </section>
 
@@ -322,9 +332,6 @@
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
-	.pricing-row:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
 
 	.pricing-description {
 		padding: 0 1.5rem 1.2rem;
@@ -351,11 +358,7 @@
 		font-size: 1.15rem;
 	}
 
-	.highlight {
-		background: rgba(246, 139, 31, 0.08);
-	}
-
-	.pricing-cta {
+	.book-cta {
 		text-align: center;
 		margin-top: 2.5rem;
 	}
@@ -378,6 +381,43 @@
 		transform: translateY(-2px);
 		box-shadow: 0 8px 20px rgba(246, 139, 31, 0.4);
 	}
+
+	.travel {
+		padding: 0.5rem 0.2rem;
+		background: #2a2a2a;
+	}
+
+	.travel-inner {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.travel-table {
+		margin-top: 3rem;
+		background: #2a2a2a;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	}
+
+	.travel-header,
+	.travel-row {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr;
+		padding: 1.2rem 1.5rem;
+		align-items: center;
+	}
+
+	.travel-header {
+		background: #f68b1f;
+		font-weight: 800;
+	}
+
+	.travel-row {
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+
 
 	/* ----------------- RESPONSIVE ----------------- */
 	@media (max-width: 768px) {
