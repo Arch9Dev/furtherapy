@@ -20,20 +20,20 @@
 	// Placeholder testimonials
 	const testimonials = [
 		{
-			quote: "Testimony 1",
-			client: "Name",
-			pet: "Pet"
+			quote: 'Testimony 1',
+			client: 'Name',
+			pet: 'Pet'
 		},
 		{
-			quote: "Testimony 2",
-			client: "Name",
-			pet: "Pet"
+			quote: 'Testimony 2',
+			client: 'Name',
+			pet: 'Pet'
 		},
-				{
-			quote: "Testimony 3",
-			client: "Name",
-			pet: "Pet"
-		},
+		{
+			quote: 'Testimony 3',
+			client: 'Name',
+			pet: 'Pet'
+		}
 	];
 </script>
 
@@ -49,10 +49,7 @@
 
 		<nav class="nav-links">
 			{#each navLinks as link}
-				<button 
-					class:active={link.route === currentRoute}
-					on:click={() => navigateTo(link.route)}
-				>
+				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
 					{link.name}
 				</button>
 			{/each}
@@ -65,8 +62,10 @@
 	<div class="hero-inner">
 		<div class="hero-content">
 			<div class="hero-text">
-				<h1 class="title">Marisa Du Toit <br> Certified Canine Massage Practitioner</h1>
-				<p class="subtitle">Helping dogs live their best lives through therapeutic massage and bodywork</p>
+				<h1 class="title">Marisa Du Toit <br /> Certified Canine Massage Practitioner</h1>
+				<p class="subtitle">
+					Helping dogs live their best lives through therapeutic massage and bodywork
+				</p>
 			</div>
 			<div class="hero-image">
 				<img src="image-3.jpg" alt="about" />
@@ -80,11 +79,26 @@
 	<div class="container">
 		<h2>About Myself</h2>
 		<div class="about-content">
-			<p>Welcome to FurTherapy. I am Marisa, a fully qualified and Nationally Board Certified Canine Massage Practitioner (NBCAAM) and proud to be the instructor for the Canis Bodyworks Mentorship Program within New Zealand.</p>
-			
-			<p>I began my professional career with a degree in Health Science and a certificate in Homeopathy, followed by a Graduate Diploma in Teaching and a Conservation and Environmental Science qualification. Having always had a love for animals, I decided to follow my true passion - working with dogs and their people.</p>
-			
-			<p>When my own dogs began to face age-related health issues including arthritis, ligament injuries, and immune disorders, my desire to help them encouraged me to research restorative and preventative care. The positive effects I saw in my own dogs far exceeded my expectations, and I wanted all dogs to experience this - and for pet parents to feel empowered to support their furry family members too.</p>
+			<p>
+				Welcome to FurTherapy. I am Marisa, a fully qualified and Nationally Board Certified Canine
+				Massage Practitioner (NBCAAM) and proud to be the instructor for the Canis Bodyworks
+				Mentorship Program within New Zealand.
+			</p>
+
+			<p>
+				I began my professional career with a degree in Health Science and a certificate in
+				Homeopathy, followed by a Graduate Diploma in Teaching and a Conservation and Environmental
+				Science qualification. Having always had a love for animals, I decided to follow my true
+				passion - working with dogs and their people.
+			</p>
+
+			<p>
+				When my own dogs began to face age-related health issues including arthritis, ligament
+				injuries, and immune disorders, my desire to help them encouraged me to research restorative
+				and preventative care. The positive effects I saw in my own dogs far exceeded my
+				expectations, and I wanted all dogs to experience this - and for pet parents to feel
+				empowered to support their furry family members too.
+			</p>
 		</div>
 	</div>
 </section>
@@ -113,7 +127,10 @@
 					<img src="placeholder-cert3.jpg" alt="Academic qualifications" />
 				</div>
 				<h3>Academic Background</h3>
-				<p>Health Science, Homeopathy, Graduate Diploma in Teaching, Conservation & Environmental Science</p>
+				<p>
+					Health Science, Homeopathy, Graduate Diploma in Teaching, Conservation & Environmental
+					Science
+				</p>
 			</div>
 		</div>
 	</div>
@@ -123,9 +140,14 @@
 <section class="services-section">
 	<div class="container">
 		<h2>What I Do</h2>
-		
+
 		<div class="service-intro">
-			<p>I provide therapeutic massage and bodywork for dogs using deliberate and focused touch techniques. Through a range of movements at varying pressures, I manipulate soft tissues including muscles, tendons, ligaments, fascia, and connective tissue to promote healing and wellbeing.</p>
+			<p>
+				I provide therapeutic massage and bodywork for dogs using deliberate and focused touch
+				techniques. Through a range of movements at varying pressures, I manipulate soft tissues
+				including muscles, tendons, ligaments, fascia, and connective tissue to promote healing and
+				wellbeing.
+			</p>
 		</div>
 
 		<div class="benefits-grid">
@@ -153,7 +175,11 @@
 
 		<div class="who-benefits">
 			<h3>Who Can Benefit</h3>
-			<p>Therapeutic massage can be used at all life stages and is beneficial for sporting dogs, senior pets, rescue animals in rehabilitation, and any dog you want to keep healthy, happy, and well-balanced.</p>
+			<p>
+				Therapeutic massage can be used at all life stages and is beneficial for sporting dogs,
+				senior pets, rescue animals in rehabilitation, and any dog you want to keep healthy, happy,
+				and well-balanced.
+			</p>
 		</div>
 	</div>
 </section>
@@ -262,10 +288,16 @@
 	}
 
 	.hero-image {
-		flex: 0 0 250px;
+		flex: 0 0 320px;
 	}
 
-
+	.hero-image img {
+		width: 100%;
+		height: 380px;
+		object-fit: cover;
+		border-radius: 12px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+	}
 	.title {
 		font-size: 2.5rem;
 		margin-bottom: 1rem;
@@ -388,7 +420,7 @@
 	}
 
 	.benefit-column li::before {
-		content: "✓";
+		content: '✓';
 		position: absolute;
 		left: 0;
 		color: #f68b1f;
@@ -488,8 +520,6 @@
 		.hero-image {
 			flex: 0 0 200px;
 		}
-
-
 
 		.title {
 			font-size: 1.8rem;
