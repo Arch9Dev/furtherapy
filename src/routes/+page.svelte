@@ -152,36 +152,6 @@
 	</div>
 </section>
 
-<!-- CONTACT -->
-<section class="contact" id="contact">
-	<div class="contact-inner">
-		<h1 class="title">Get in Touch</h1>
-		<p class="subtitle">Book a session or ask a question</p>
-
-		<form
-			action="https://formspree.io/f/maqqngvd"
-			method="POST"
-			class="contact-form"
-			on:submit|preventDefault={handleSubmit}
-		>
-			<input type="text" name="name" placeholder="Your Name" required />
-			<input type="text" name="contact" placeholder="Email or Phone Number" required />
-			<textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-			<button type="submit" class="btn-primary"> Send Message </button>
-		</form>
-
-		{#if showModal}
-			<div class="modal-backdrop">
-				<div class="modal">
-					<h2>{isError ? 'Error' : 'Success'}</h2>
-					<p>{modalMessage}</p>
-					<button class="btn-primary" on:click={() => (showModal = false)}> Close </button>
-				</div>
-			</div>
-		{/if}
-	</div>
-</section>
-
 <style global>
 	/* ----------------- RESET ----------------- */
 	* {
@@ -407,44 +377,6 @@
 	.btn-primary:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 8px 20px rgba(246, 139, 31, 0.4);
-	}
-
-	/* ----------------- CONTACT ----------------- */
-	.contact {
-		padding: 5rem 2rem;
-		background: #1f1f1f;
-	}
-
-	.contact-inner {
-		max-width: 700px;
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	.contact-form {
-		margin-top: 3rem;
-		display: flex;
-		flex-direction: column;
-		gap: 1.2rem;
-	}
-
-	.contact-form input,
-	.contact-form textarea {
-		padding: 1rem 1.2rem;
-		border-radius: 10px;
-		border: none;
-		font-size: 1rem;
-		font-family: inherit;
-	}
-
-	.contact-form textarea {
-		resize: vertical;
-		min-height: 140px;
-	}
-
-	.contact-form input:focus,
-	.contact-form textarea:focus {
-		outline: 2px solid #f68b1f;
 	}
 
 	/* ----------------- RESPONSIVE ----------------- */

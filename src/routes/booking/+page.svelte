@@ -30,10 +30,7 @@
 
 		<nav class="nav-links">
 			{#each navLinks as link}
-				<button 
-					class:active={link.route === currentRoute}
-					on:click={() => navigateTo(link.route)}
-				>
+				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
 					{link.name}
 				</button>
 			{/each}
@@ -41,14 +38,34 @@
 	</div>
 </header>
 
-
-<!-- PLACEHOLDER SECTION -->
+<!-- HERO SECTION -->
 <section class="hero" id="about">
 	<div class="hero-inner">
-		<h1 class="title">PLACEHOLDER</h1>
-		<p class="subtitle">TEXT</p>
+		<div class="hero-content">
+			<div class="hero-text">
+				<h1 class="title">Booking</h1>
+				<p class="subtitle">If you would like to make a booking please contact me:</p>
+			</div>
+		</div>
 	</div>
 </section>
+
+<!-- Contact Information Table -->
+<div class="info-table">
+	<div class="table-header">
+		<h2>Contact Information</h2>
+	</div>
+	<div class="table-body">
+		<div class="table-row">
+			<span class="label">Telephone</span>
+			<span class="value">021 144 1722</span>
+		</div>
+		<div class="table-row">
+			<span class="label">Email</span>
+			<span class="value">fur.therapymassage@gmail.com</span>
+		</div>
+	</div>
+</div>
 
 <style global>
 	/* ----------------- RESET ----------------- */
@@ -125,8 +142,35 @@
 		font-weight: 300;
 	}
 
-	
+	/* ----------------- INFO TABLES ----------------- */
+	.info-table {
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+	}
 
+	.table-header {
+		background: #f68b1f;
+		padding: 1.5rem 1.5rem;
+	}
+
+	.table-header h2 {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #ffffff;
+		margin: 0;
+	}
+
+	.table-body {
+		background: #2a2a2a;
+	}
+
+	.table-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 2.0rem 1.5rem;
+	}
 	/* ----------------- RESPONSIVE ----------------- */
 	@media (max-width: 768px) {
 		.nav-links {
@@ -136,7 +180,5 @@
 		.subtitle {
 			font-size: 1.3rem;
 		}
-
-
 	}
 </style>
