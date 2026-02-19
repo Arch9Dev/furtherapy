@@ -69,7 +69,7 @@
 				<p class="subtitle">Helping dogs live their best lives through therapeutic massage and bodywork</p>
 			</div>
 			<div class="hero-image">
-				<p class="subtitle">IMAGE PLACE HOLDER</p>
+				<img src="image-3.jpg" alt="about" />
 			</div>
 		</div>
 	</div>
