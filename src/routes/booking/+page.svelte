@@ -1,4 +1,7 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
 	const navLinks = [
 		{ name: 'Home', route: '/' },
 		{ name: 'About', route: '/about' },
@@ -7,24 +10,28 @@
 		{ name: 'Contact', route: '/contact' }
 	];
 
-	// Set this to the current page route
-	const currentRoute = '/booking';
+	$: currentRoute = $page.url.pathname;
 
-	/**
-	 * @param {string} route
-	 */
-	function navigateTo(route) {
-		window.location.href = route;
+	function navigateTo(route: string) {
+		menuOpen = false;
+		goto(route);
 	}
+
+	let menuOpen = false;
+	function toggleMenu() { menuOpen = !menuOpen; }
 </script>
 
 <!-- NAV BAR -->
 <header class="navbar">
 	<div class="nav-container">
-		<div class="brand">
-			<!-- svelte-ignore a11y_invalid_attribute -->
-			<a href="#">
-				<img src="logo_white.png" alt="Furtherapy Logo white" />
+		<div class="brand desktop-brand">
+			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
+				<img src="logo_white.png" alt="FurTherapy Logo" />
+			</a>
+		</div>
+		<div class="brand mobile-brand">
+			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
+				<div class="logo-placeholder">FT</div>
 			</a>
 		</div>
 
@@ -35,150 +42,190 @@
 				</button>
 			{/each}
 		</nav>
+
+		<button class="hamburger" on:click={toggleMenu} aria-label="Toggle navigation menu" aria-expanded={menuOpen}>
+			<span class="bar"></span>
+			<span class="bar"></span>
+			<span class="bar"></span>
+		</button>
 	</div>
+
+	{#if menuOpen}
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_interactive_supports_focus -->
+		<div class="mobile-overlay" on:click={() => (menuOpen = false)} role="presentation"></div>
+		<nav class="mobile-menu">
+			{#each navLinks as link}
+				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
+					{link.name}
+				</button>
+			{/each}
+		</nav>
+	{/if}
 </header>
 
-<!-- HERO SECTION -->
-<section class="hero" id="about">
+<!-- HERO -->
+<section class="hero" id="booking-hero">
 	<div class="hero-inner">
-		<div class="hero-content">
-			<div class="hero-text">
-				<h1 class="title">Booking</h1>
-				<p class="subtitle">If you would like to make a booking please contact me:</p>
+		<h1 class="title">Booking</h1>
+		<p class="subtitle">To make a booking, please get in touch:</p>
+	</div>
+</section>
+
+<!-- CONTACT INFO -->
+<section class="info-section">
+	<div class="info-container">
+		<div class="info-table">
+			<div class="table-header"><h2>Contact Information</h2></div>
+			<div class="table-body">
+				<div class="table-row">
+					<span class="label">Telephone</span>
+					<a href="tel:02114411722" class="value">021 144 1722</a>
+				</div>
+				<div class="table-row">
+					<span class="label">Email</span>
+					<a href="mailto:fur.therapymassage@gmail.com" class="value">fur.therapymassage@gmail.com</a>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
-<!-- Contact Information Table -->
-<div class="info-table">
-	<div class="table-header">
-		<h2>Contact Information</h2>
-	</div>
-	<div class="table-body">
-		<div class="table-row">
-			<span class="label">Telephone</span>
-			<span class="value">021 144 1722</span>
-		</div>
-		<div class="table-row">
-			<span class="label">Email</span>
-			<span class="value">fur.therapymassage@gmail.com</span>
-		</div>
-	</div>
-</div>
-
 <style global>
-	/* ----------------- RESET ----------------- */
-	* {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-	}
+	* { box-sizing: border-box; margin: 0; padding: 0; }
 
 	:global(body) {
 		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-		background: #1f1f1f;
-		color: #ffffff;
-		line-height: 1.65;
-		margin: 0;
-		padding: 0;
+		background: #1f1f1f; color: #ffffff; line-height: 1.65;
 	}
 
-	/* ----------------- NAVBAR ----------------- */
+	/* --- NAVBAR --- */
 	.navbar {
-		background: #f68b1f;
-		height: 80px;
-		display: flex;
-		align-items: center;
+		background: #f68b1f; height: 80px; display: flex; flex-direction: column;
+		position: sticky; top: 0; z-index: 100;
 	}
-
 	.nav-container {
-		width: 100%;
-		padding: 0 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		width: 100%; height: 80px; padding: 0 2rem;
+		display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
 	}
-
-	.brand img {
-		height: 45px;
+	.desktop-brand img { height: 45px; }
+	.mobile-brand { display: none; }
+	.logo-placeholder {
+		width: 38px; height: 38px; background: rgba(255,255,255,0.25); border-radius: 8px;
+		display: flex; align-items: center; justify-content: center;
+		font-weight: 900; font-size: 1rem; color: #fff;
 	}
-
+	.nav-links { display: flex; align-items: center; }
 	.nav-links button {
-		color: #fff;
-		background: none;
-		border: none;
-		cursor: pointer;
-		font-weight: 800;
-		font-size: 1.5rem;
-		margin-left: 1.5rem;
-		font-family: inherit;
+		color: #fff; background: none; border: none; cursor: pointer;
+		font-weight: 800; font-size: 1.1rem; margin-left: 1.5rem; font-family: inherit;
 	}
+	.nav-links button:hover { text-decoration: underline; }
+	.nav-links button.active { color: #1f1f1f; }
 
-	.nav-links button:hover {
-		text-decoration: underline;
+	.hamburger {
+		display: none; flex-direction: column; justify-content: center; align-items: center;
+		gap: 5px; background: none; border: none; cursor: pointer;
+		padding: 6px; border-radius: 6px; width: 44px; height: 44px;
 	}
-
-	.nav-links button.active {
-		color: #1f1f1f;
+	.hamburger:hover { background: rgba(255,255,255,0.15); }
+	.bar {
+		display: block; width: 24px; height: 2.5px; background: #fff;
+		border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease;
 	}
+	.hamburger[aria-expanded='true'] .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+	.hamburger[aria-expanded='true'] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+	.hamburger[aria-expanded='true'] .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-	/* ----------------- HERO ----------------- */
-	.hero {
-		height: 250px;
-		display: flex;
-		align-items: center;
+	.mobile-menu {
+		display: none; flex-direction: column; background: #e07a18; width: 100%;
+		padding: 0.5rem 0 1rem; position: absolute; top: 80px; left: 0; right: 0;
+		z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.3); animation: slideDown 0.2s ease;
 	}
-
-	.hero-inner {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 2rem;
+	.mobile-overlay { display: none; }
+	@keyframes slideDown {
+		from { opacity: 0; transform: translateY(-8px); }
+		to   { opacity: 1; transform: translateY(0); }
 	}
-
-	.subtitle {
-		font-size: 2rem;
-		margin-top: 1rem;
-		font-weight: 300;
+	.mobile-menu button {
+		background: none; border: none; color: #fff; font-weight: 800; font-size: 1.1rem;
+		font-family: inherit; cursor: pointer; text-align: left;
+		padding: 0.9rem 2rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12);
 	}
+	.mobile-menu button:last-child { border-bottom: none; }
+	.mobile-menu button:hover { background: rgba(255,255,255,0.1); }
+	.mobile-menu button.active { color: #1f1f1f; }
 
-	/* ----------------- INFO TABLES ----------------- */
-	.info-table {
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-	}
+	/* --- HERO --- */
+	.hero { height: 250px; display: flex; align-items: center; background: #2a2a2a; }
+	.hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+	.title    { font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
+	.subtitle { font-size: 1.5rem; margin-top: 1rem; font-weight: 300; }
 
-	.table-header {
-		background: #f68b1f;
-		padding: 1.5rem 1.5rem;
-	}
-
-	.table-header h2 {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #ffffff;
-		margin: 0;
-	}
-
-	.table-body {
-		background: #2a2a2a;
-	}
-
+	/* --- INFO TABLE --- */
+	.info-section { padding: 3rem 2rem; }
+	.info-container { max-width: 700px; margin: 0 auto; }
+	.info-table { border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+	.table-header { background: #f68b1f; padding: 1.5rem; }
+	.table-header h2 { font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0; }
+	.table-body { background: #2a2a2a; }
 	.table-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 2.0rem 1.5rem;
+		display: flex; justify-content: space-between; align-items: center;
+		padding: 1.25rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);
 	}
-	/* ----------------- RESPONSIVE ----------------- */
-	@media (max-width: 768px) {
-		.nav-links {
-			display: none;
+	.table-row:first-child { border-top: none; }
+	.label { font-size: 1rem; color: #fff; font-weight: 500; }
+	.value { font-size: 1rem; color: #f68b1f; font-weight: 600; text-decoration: none; }
+	.value:hover { text-decoration: underline; }
+
+	/* ================================================================
+	   RESPONSIVE
+	   ================================================================ */
+
+	/* --- Tablet (≤ 1024px) --- */
+	@media (max-width: 1024px) {
+		.desktop-brand { display: none; }
+		.mobile-brand  { display: block; }
+		.nav-links     { display: none; }
+		.hamburger     { display: flex; }
+		.mobile-menu   { display: flex; }
+		.mobile-overlay {
+			display: block; position: fixed; inset: 0; top: 80px; z-index: 98;
 		}
 
-		.subtitle {
-			font-size: 1.3rem;
-		}
+		.title    { font-size: 2rem; }
+		.subtitle { font-size: 1.3rem; }
+		.hero     { height: auto; padding: 2.5rem 1.5rem; }
+		.hero-inner { padding: 0; }
+		.info-section { padding: 2.5rem 1.5rem; }
+	}
+
+	/* --- Mobile (≤ 767px) --- */
+	@media (max-width: 767px) {
+		.title    { font-size: 1.65rem; }
+		.subtitle { font-size: 1.1rem; margin-top: 0.65rem; }
+		.hero     { padding: 2rem 1.25rem; }
+
+		.info-section { padding: 2rem 1.25rem; }
+
+		/* Wrap rows so long email doesn't overflow */
+		.table-row { flex-wrap: wrap; gap: 0.25rem; padding: 1rem 1.25rem; }
+		.value { word-break: break-all; }
+		.label, .value { font-size: 0.975rem; }
+	}
+
+	/* --- Small phones (≤ 479px) --- */
+	@media (max-width: 479px) {
+		.nav-container { padding: 0 1rem; }
+		.logo-placeholder { width: 34px; height: 34px; font-size: 0.875rem; }
+		.mobile-menu button { font-size: 1rem; padding: 0.85rem 1.25rem; }
+
+		.title    { font-size: 1.4rem; }
+		.subtitle { font-size: 1rem; }
+
+		.info-section   { padding: 1.75rem 1rem; }
+		.table-header   { padding: 1.1rem 1.25rem; }
+		.table-row      { padding: 0.9rem 1.25rem; }
+		.label, .value  { font-size: 0.9375rem; }
 	}
 </style>
