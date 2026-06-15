@@ -910,6 +910,48 @@
 	/* ── Mobile ── */
 	@media (max-width: 640px) {
 		.sidebar { display: none; }
-		.main { padding: 1.5rem 1rem; }
+		.main { padding: 1rem 0.875rem 5rem; }
+		.mobile-nav { display: flex; }
+		.avail-grid { grid-template-columns: 1fr; }
+		.day-row { flex-wrap: wrap; gap: 0.5rem; }
+		.time-range { margin-left: 0; width: 100%; }
+		.booking-meta { gap: 0.4rem 0.75rem; }
+		.booking-actions { flex-wrap: wrap; }
+		.section-header h1 { font-size: 1.25rem; }
+		.filter-row { gap: 0.35rem; }
+		.filter-btn { font-size: 0.75rem; padding: 0.4rem 0.65rem; }
+		.blocked-add { flex-direction: column; }
+		.date-input { min-width: unset; width: 100%; }
+	}
+
+	.mobile-nav {
+		display: none;
+		position: fixed;
+		bottom: 0; left: 0; right: 0;
+		background: #222;
+		border-top: 1px solid rgba(255,255,255,0.1);
+		z-index: 200;
+		padding: 0.5rem 0 0.75rem;
+	}
+
+	.mobile-nav button {
+		flex: 1;
+		display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+		background: none; border: none; color: #888;
+		font-size: 0.65rem; font-weight: 700; font-family: inherit;
+		cursor: pointer; padding: 0.4rem 0;
+		transition: color 0.15s;
+		position: relative;
+	}
+
+	.mobile-nav button.active { color: #f68b1f; }
+
+	.mobile-nav svg { flex-shrink: 0; }
+
+	.mob-badge {
+		position: absolute; top: 0; right: calc(50% - 18px);
+		background: #f68b1f; color: #fff;
+		font-size: 0.6rem; font-weight: 800;
+		padding: 0.05rem 0.35rem; border-radius: 50px;
 	}
 </style>
