@@ -290,86 +290,6 @@
 	</div>
 </section>
 
-<!-- CONTACT FORM -->
-<section class="contact" id="contact" aria-labelledby="contact-heading">
-	<div class="contact-inner">
-		<h2 class="title" id="contact-heading">Get in Touch</h2>
-		<p class="contact-description">
-			Have a question about whether massage is right for your dog? Send a message and we'll get back
-			to you.
-		</p>
-
-		<div class="contact-form-wrapper">
-			<div class="form-field">
-				<label for="contact-name">Name</label>
-				<input
-					id="contact-name"
-					type="text"
-					bind:value={formName}
-					placeholder="Your name"
-					autocomplete="name"
-				/>
-			</div>
-
-			<div class="form-field">
-				<label for="contact-email">Email</label>
-				<input
-					id="contact-email"
-					type="email"
-					bind:value={formEmail}
-					placeholder="your@email.com"
-					autocomplete="email"
-				/>
-			</div>
-
-			<div class="form-field">
-				<label for="contact-message">Message</label>
-				<textarea
-					id="contact-message"
-					bind:value={formMessage}
-					placeholder="Tell us about your dog and how we can help..."
-					rows="5"
-				></textarea>
-			</div>
-
-			<button
-				class="btn-primary btn-submit"
-				on:click={handleSubmit}
-				disabled={formSubmitting || !formName || !formEmail || !formMessage}
-				aria-busy={formSubmitting}
-			>
-				{formSubmitting ? 'Sending…' : 'Send Message'}
-			</button>
-		</div>
-	</div>
-</section>
-
-<!-- MODAL -->
-{#if showModal}
-	<div
-		class="modal-overlay"
-		on:click={closeModal}
-		on:keydown={handleOverlayKeydown}
-		role="button"
-		tabindex="-1"
-		aria-label="Close dialog"
-	>
-		<!-- svelte-ignore a11y_interactive_supports_focus -->
-		<div
-			class="modal"
-			class:modal-error={isError}
-			on:click|stopPropagation
-			on:keydown={(e) => e.stopPropagation()}
-			role="dialog"
-			aria-modal="true"
-			aria-live="polite"
-			aria-labelledby="modal-message"
-		>
-			<p id="modal-message">{modalMessage}</p>
-			<button class="modal-close" on:click={closeModal}>Close</button>
-		</div>
-	</div>
-{/if}
 
 <style global>
 	/* ----------------- RESET ----------------- */
@@ -488,9 +408,11 @@
 
 	/* Orange focus ring inside dark sections */
 	.pricing :global(*:focus-visible),
-	.travel :global(*:focus-visible),
-	.contact :global(*:focus-visible),
-
+	.travel :global(*:focus-visible) {
+		outline: 3px solid #ff9a3c;
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
 
 	/* ----------------- HAMBURGER ----------------- */
 	.hamburger {
@@ -734,85 +656,6 @@
 		max-width: 700px;
 	}
 
-	/* ----------------- CONTACT FORM ----------------- */
-	.contact {
-		padding: 5rem 2rem;
-		background: #1f1f1f;
-	}
-
-	.contact-inner {
-		max-width: 680px;
-		margin: 0 auto;
-	}
-
-	.contact-description {
-		margin-top: 1rem;
-		margin-bottom: 2.5rem;
-		color: #e0e0e0;
-		font-size: 1.05rem;
-	}
-
-	.contact-form-wrapper {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-	}
-
-	.form-field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-	}
-
-	.form-field label {
-		font-weight: 700;
-		font-size: 0.9rem;
-		color: #e0e0e0;
-		letter-spacing: 0.04em;
-	}
-
-	.form-field input,
-	.form-field textarea {
-		background: #2a2a2a;
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 8px;
-		padding: 0.8rem 1rem;
-		color: #fff;
-		font-size: 1rem;
-		font-family: inherit;
-		transition: border-color 0.2s ease;
-		resize: vertical;
-	}
-
-	.form-field input::placeholder,
-	.form-field textarea::placeholder {
-		color: #666;
-	}
-
-	.form-field input:hover,
-	.form-field textarea:hover {
-		border-color: rgba(246, 139, 31, 0.4);
-	}
-
-	.form-field input:focus,
-	.form-field textarea:focus {
-		border-color: #f68b1f;
-		outline: none;
-	}
-
-	.btn-submit {
-		align-self: flex-start;
-		border: none;
-		cursor: pointer;
-		font-family: inherit;
-	}
-
-	.btn-submit:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-		transform: none !important;
-		box-shadow: none !important;
-	}
 
 	/* ----------------- BOOK CTA ----------------- */
 	.book-cta {
@@ -839,50 +682,6 @@
 		box-shadow: 0 8px 20px rgba(246, 139, 31, 0.4);
 	}
 
-	/* ----------------- MODAL ----------------- */
-	.modal-overlay {
-		position: fixed;
-		inset: 0;
-		background: rgba(0, 0, 0, 0.65);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 200;
-	}
-
-	.modal {
-		background: #2a2a2a;
-		border-radius: 12px;
-		padding: 2rem 2.5rem;
-		max-width: 420px;
-		width: 90%;
-		text-align: center;
-		border-top: 4px solid #f68b1f;
-	}
-
-	.modal.modal-error {
-		border-top-color: #e05252;
-	}
-	.modal p {
-		font-size: 1.05rem;
-		margin-bottom: 1.5rem;
-	}
-
-	.modal-close {
-		background: #f68b1f;
-		color: #fff;
-		border: none;
-		padding: 0.6rem 1.6rem;
-		border-radius: 50px;
-		font-weight: 800;
-		cursor: pointer;
-		font-size: 1rem;
-		font-family: inherit;
-	}
-
-	.modal-close:hover {
-		opacity: 0.85;
-	}
 
 	/* =================================================================
 	   RESPONSIVE
@@ -999,8 +798,8 @@
 			object-fit: cover;
 		}
 		.pricing,
-		.travel,
-		.contact {
+		.travel
+		{
 			padding: 4rem 1.5rem;
 		}
 
@@ -1050,8 +849,8 @@
 		}
 
 		.pricing,
-		.travel,
-		.contact {
+		.travel
+		{
 			padding: 3rem 1.25rem;
 		}
 
@@ -1108,19 +907,6 @@
 			font-size: 1rem;
 			padding: 1rem 1.5rem;
 		}
-
-		.btn-submit {
-			align-self: stretch;
-			max-width: 320px;
-			width: 100%;
-		}
-
-		.modal {
-			padding: 1.5rem 1.25rem;
-		}
-		.modal p {
-			font-size: 0.95rem;
-		}
 	}
 
 	/* ---- Small phones (≤ 479px) ---- */
@@ -1164,8 +950,8 @@
 		}
 
 		.pricing,
-		.travel,
-		.contact {
+		.travel
+		{
 			padding: 2.5rem 1rem;
 		}
 
