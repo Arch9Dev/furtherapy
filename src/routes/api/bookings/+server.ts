@@ -2,9 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDb } from '$lib/db';
 import { generateSlots, SERVICE_DURATIONS } from '$lib/bookingHelpers';
+import { notifyAdminNewBooking } from '$lib/email';
 
-// GET /api/bookings?year=2025&month=5&service=first_visit
-// Returns: { blockedDates, availableDates, slots: { [date]: string[] } }
 export const GET: RequestHandler = async ({ url }) => {
 	const db = getDb();
 	const year = Number(url.searchParams.get('year') ?? new Date().getFullYear());
@@ -21,7 +20,6 @@ export const GET: RequestHandler = async ({ url }) => {
 	).all(`${year}-${month.toString().padStart(2, '0')}%`) as { date: string }[];
 	const blockedSet = new Set(blockedRaw.map(r => r.date));
 
-	// Get all approved bookings this month to exclude taken slots
 	const approvedBookings = db.prepare(
 		`SELECT date, time FROM bookings WHERE status = 'approved' AND date LIKE ?`
 	).all(`${year}-${month.toString().padStart(2, '0')}%`) as { date: string; time: string }[];
@@ -59,7 +57,6 @@ export const GET: RequestHandler = async ({ url }) => {
 	return json({ availableDates, blockedDates: [...blockedSet], slots });
 };
 
-// POST /api/bookings — submit a booking request
 export const POST: RequestHandler = async ({ request }) => {
 	const db = getDb();
 	const body = await request.json();
@@ -72,7 +69,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'New customers must provide email and phone.' }, { status: 400 });
 	}
 
-	// Check slot still available
 	const conflict = db.prepare(
 		`SELECT id FROM bookings WHERE date = ? AND time = ? AND status = 'approved'`
 	).get(date, time);
@@ -84,6 +80,9 @@ export const POST: RequestHandler = async ({ request }) => {
 		INSERT INTO bookings (customer_type, service, name, email, phone, dog_name, date, time, status)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
 	`).run(customer_type, service, name, email ?? null, phone ?? null, dog_name, date, time);
+
+	// Notify admin of new booking
+	notifyAdminNewBooking({ name, dog_name, service, date, time, email, phone }).catch(console.error);
 
 	return json({ success: true, id: result.lastInsertRowid }, { status: 201 });
 };

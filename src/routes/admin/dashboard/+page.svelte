@@ -29,10 +29,20 @@
 		date: string;
 	};
 
+	type ContactSubmission = {
+		id: number;
+		name: string;
+		email: string;
+		message: string;
+		read: number;
+		created_at: string;
+	};
+
 	export let data: {
 		bookings: Booking[];
 		weekly: WeekDay[];
 		blocked: BlockedDate[];
+		contacts: ContactSubmission[];
 	};
 
 	const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -43,30 +53,31 @@
 
 	let activeTab: 'contacts' | 'bookings' | 'availability' = 'bookings';
 
-	// ── Contacts (placeholder) ──────────────────────────────────────────
-	const contacts = [
-		{
-			id: 1,
-			name: 'Sarah Mitchell',
-			email: 'sarah@example.com',
-			message: 'Hi! My golden retriever has been limping after walks — would massage help?',
-			date: '2025-05-20'
-		},
-		{
-			id: 2,
-			name: 'James Teo',
-			email: 'james.teo@example.com',
-			message: 'Interested in the 5-session prepaid package. Can you travel to Remuera?',
-			date: '2025-05-19'
-		},
-		{
-			id: 3,
-			name: 'Priya Nair',
-			email: 'priya.n@example.com',
-			message: 'My 10-year-old lab has arthritis. Would love to find out more about initial assessment.',
-			date: '2025-05-17'
-		}
-	];
+	// ── Contacts ─────────────────────────────────────────────────────────
+	let contacts: ContactSubmission[] = data.contacts ?? [];
+
+	$: unreadCount = contacts.filter(c => !c.read).length;
+
+	async function markRead(id: number) {
+		await fetch(`/api/contact/${id}`, { method: 'PATCH' });
+		contacts = contacts.map(c => c.id === id ? { ...c, read: 1 } : c);
+	}
+
+	async function deleteContact(id: number) {
+		if (!confirm('Delete this message?')) return;
+		const res = await fetch(`/api/contact/${id}`, { method: 'DELETE' });
+		if (res.ok) contacts = contacts.filter(c => c.id !== id);
+	}
+
+	function formatRelative(iso: string) {
+		const date = new Date(iso);
+		const now = new Date();
+		const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
+		if (diff < 60) return 'just now';
+		if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+		if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+		return date.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short' });
+	}
 
 	// ── Bookings ────────────────────────────────────────────────────────
 	let bookings: Booking[] = data.bookings ?? [];
@@ -222,6 +233,9 @@
 					<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
 				</svg>
 				Contact Submissions
+				{#if unreadCount > 0}
+					<span class="nav-badge">{unreadCount}</span>
+				{/if}
 			</button>
 		</nav>
 
@@ -459,25 +473,55 @@
 		{:else}
 			<div class="section-header">
 				<h1>Contact Submissions</h1>
-				<span class="badge">{contacts.length}</span>
+				{#if contacts.length > 0}
+					<span class="badge">{contacts.length}</span>
+				{/if}
+				{#if unreadCount > 0}
+					<span class="badge" style="background:#3ecf8e;">{unreadCount} unread</span>
+				{/if}
 			</div>
-			<p class="section-note">Messages sent via the contact form. Wire up to your database as your backend develops.</p>
+			<p class="section-note">Messages submitted via the contact form. Reply directly by clicking the email address.</p>
 
-			<div class="cards">
-				{#each contacts as c}
-					<div class="contact-card">
-						<div class="card-top">
-							<div class="avatar">{c.name.split(' ').map((n) => n[0]).join('')}</div>
-							<div>
-								<p class="booking-name">{c.name}</p>
-								<a href="mailto:{c.email}" class="contact-link">{c.email}</a>
+			{#if contacts.length === 0}
+				<div class="empty-state">
+					<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5">
+						<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+					</svg>
+					<p>No contact submissions yet.</p>
+				</div>
+			{:else}
+				<div class="cards">
+					{#each contacts as c (c.id)}
+						<div class="contact-card" class:unread={!c.read}>
+							<div class="card-top">
+								<div class="avatar">{c.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}</div>
+								<div style="flex:1; min-width:0;">
+									<p class="booking-name">
+										{c.name}
+										{#if !c.read}<span class="unread-dot">●</span>{/if}
+									</p>
+									<a href="mailto:{c.email}" class="contact-link">{c.email}</a>
+								</div>
+								<span class="date-label">{formatRelative(c.created_at)}</span>
 							</div>
-							<span class="date-label">{c.date}</span>
+							<p class="message">"{c.message}"</p>
+							<div class="contact-actions">
+								{#if !c.read}
+									<button class="action-btn approve" on:click={() => markRead(c.id)}>
+										✓ Mark read
+									</button>
+								{/if}
+								<a href="mailto:{c.email}?subject=Re: Your FurTherapy enquiry" class="action-btn approve" style="text-decoration:none; display:inline-block;">
+									Reply by email
+								</a>
+								<button class="action-btn delete" on:click={() => deleteContact(c.id)}>
+									Delete
+								</button>
+							</div>
 						</div>
-						<p class="message">"{c.message}"</p>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{/if}
 		{/if}
 	</main>
 </div>
@@ -854,7 +898,14 @@
 	.message {
 		font-size: 0.9rem; color: #ccc; line-height: 1.55;
 		border-left: 3px solid rgba(246,139,31,0.4); padding-left: 0.75rem;
+		margin-bottom: 0.75rem;
 	}
+
+	.contact-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+	.contact-card.unread { border-left: 3px solid #3ecf8e; }
+
+	.unread-dot { color: #3ecf8e; font-size: 0.6rem; margin-left: 0.35rem; vertical-align: middle; }
 
 	/* ── Mobile ── */
 	@media (max-width: 640px) {
