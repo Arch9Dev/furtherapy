@@ -1,12 +1,10 @@
 import { json, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { ADMIN_USERNAME, ADMIN_PASSWORD } from '$env/static/private';
 
-const ADMIN_USERNAME = 'FurTherapy';
-const ADMIN_PASSWORD = 'Benjamin2807';
 const SESSION_COOKIE = 'ft_admin_session';
 const SESSION_VALUE = 'authenticated';
 
-// GET: if already logged in, redirect to dashboard
 export const GET: RequestHandler = async ({ cookies }) => {
 	if (cookies.get(SESSION_COOKIE) === SESSION_VALUE) {
 		throw redirect(302, '/admin/dashboard');
@@ -14,7 +12,6 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	return new Response(null, { status: 200 });
 };
 
-// POST: validate credentials
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { username, password } = await request.json();
 
@@ -24,7 +21,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			httpOnly: true,
 			sameSite: 'strict',
 			secure: true,
-			maxAge: 60 * 60 * 8 // 8 hours
+			maxAge: 60 * 60 * 8
 		});
 		return json({ success: true });
 	}

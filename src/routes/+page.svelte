@@ -11,7 +11,7 @@
 		{ name: 'Contact', route: '/contact' }
 	];
 
-	const slides = ['Dog1.png', 'Dog2.png', 'Dog3.png', 'Dog4.png', 'Dog5.png'];
+	const slides = ['Dog1.png', 'Dog2.png', 'Dog3.png'];
 
 	$: currentRoute = $page.url.pathname;
 
