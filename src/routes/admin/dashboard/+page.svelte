@@ -934,7 +934,7 @@
 		padding: 0.5rem 0 0.75rem;
 	}
 
-	.mobile-nav button {
+	:global(.mobile-nav button) {
 		flex: 1;
 		display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
 		background: none; border: none; color: #888;
@@ -944,9 +944,9 @@
 		position: relative;
 	}
 
-	.mobile-nav button.active { color: #f68b1f; }
+	:global(.mobile-nav button.active) { color: #f68b1f; }
 
-	.mobile-nav svg { flex-shrink: 0; }
+	:global(.mobile-nav svg) { flex-shrink: 0; }
 
 	.mob-badge {
 		position: absolute; top: 0; right: calc(50% - 18px);
