@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import { join } from 'path';
+import { mkdirSync } from 'fs';
 
 const DB_PATH = join(process.cwd(), 'data', 'furtherapy.db');
 
@@ -8,12 +9,6 @@ let _db: Database.Database | null = null;
 export function getDb(): Database.Database {
 	if (_db) return _db;
 
-	// Ensure data directory exists
-	import('fs').then(({ mkdirSync }) => {
-		mkdirSync(join(process.cwd(), 'data'), { recursive: true });
-	});
-
-	const { mkdirSync } = require('fs');
 	mkdirSync(join(process.cwd(), 'data'), { recursive: true });
 
 	_db = new Database(DB_PATH);
@@ -61,7 +56,6 @@ function initSchema(db: Database.Database) {
 			INSERT INTO weekly_availability (day_of_week, is_open, open_time, close_time)
 			VALUES (?, ?, ?, ?)
 		`);
-		// Mon–Fri open 9–5, weekends closed
 		const defaults = [
 			[0, 0, null, null],
 			[1, 1, '09:00', '17:00'],
