@@ -59,14 +59,28 @@ export const GET: RequestHandler = async ({ url }) => {
 
 export const POST: RequestHandler = async ({ request }) => {
 	const db = getDb();
-	const body = await request.json();
+	const body = await request.json().catch(() => null);
+	if (!body) return json({ error: 'Invalid request body.' }, { status: 400 });
+
 	const { customer_type, service, name, email, phone, dog_name, date, time } = body;
 
 	if (!customer_type || !service || !name || !dog_name || !date || !time) {
 		return json({ error: 'Missing required fields.' }, { status: 400 });
 	}
+	if (!['new', 'returning'].includes(customer_type)) {
+		return json({ error: 'Invalid customer type.' }, { status: 400 });
+	}
+	if (!['first_visit', 'return_visit'].includes(service)) {
+		return json({ error: 'Invalid service.' }, { status: 400 });
+	}
 	if (customer_type === 'new' && (!email || !phone)) {
 		return json({ error: 'New customers must provide email and phone.' }, { status: 400 });
+	}
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+		return json({ error: 'Invalid date format.' }, { status: 400 });
+	}
+	if (!/^\d{2}:\d{2}$/.test(time)) {
+		return json({ error: 'Invalid time format.' }, { status: 400 });
 	}
 
 	const conflict = db.prepare(
@@ -81,7 +95,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
 	`).run(customer_type, service, name, email ?? null, phone ?? null, dog_name, date, time);
 
-	// Notify admin of new booking
 	notifyAdminNewBooking({ name, dog_name, service, date, time, email, phone }).catch(console.error);
 
 	return json({ success: true, id: result.lastInsertRowid }, { status: 201 });

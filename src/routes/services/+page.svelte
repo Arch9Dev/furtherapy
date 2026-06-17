@@ -172,13 +172,19 @@
 </section>
 
 <style global>
-	* { box-sizing: border-box; margin: 0; padding: 0; }
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
 
 	:global(body) {
 		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
 		background: #1f1f1f;
 		color: #ffffff;
 		line-height: 1.65;
+		margin: 0;
+		padding: 0;
 	}
 
 	.title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; }

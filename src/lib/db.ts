@@ -54,6 +54,9 @@ function initSchema(db: Database.Database) {
 			read       INTEGER NOT NULL DEFAULT 0,
 			created_at TEXT NOT NULL DEFAULT (datetime('now'))
 		);
+
+		CREATE INDEX IF NOT EXISTS idx_bookings_date_status ON bookings (date, status);
+		CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings (status);
 	`);
 
 	const count = (db.prepare('SELECT COUNT(*) as c FROM weekly_availability').get() as { c: number }).c;

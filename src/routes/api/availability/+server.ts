@@ -16,7 +16,10 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 		return json({ error: 'Unauthorised' }, { status: 401 });
 	}
 	const db = getDb();
-	const { weekly, blockedDates } = await request.json();
+	const body = await request.json().catch(() => null);
+	if (!body) return json({ error: 'Invalid request body.' }, { status: 400 });
+
+	const { weekly, blockedDates } = body;
 
 	// Update weekly availability
 	const updateDay = db.prepare(`

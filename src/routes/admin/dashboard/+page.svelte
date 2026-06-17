@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
+	let menuOpen = false;
+
 	type Booking = {
 		id: number;
 		customer_type: string;
@@ -203,6 +205,42 @@
 </svelte:head>
 
 <div class="page">
+	<!-- Mobile header -->
+	<header class="mobile-header">
+		<div class="mobile-brand">
+			<div class="logo-mark" aria-hidden="true">FT</div>
+			<span>Admin</span>
+		</div>
+		<button
+			class="hamburger"
+			on:click={() => (menuOpen = !menuOpen)}
+			aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+			aria-expanded={menuOpen}
+		>
+			<span class="bar"></span>
+			<span class="bar"></span>
+			<span class="bar"></span>
+		</button>
+	</header>
+
+	{#if menuOpen}
+		<div class="mobile-overlay" on:click={() => (menuOpen = false)} role="presentation"></div>
+		<nav class="mobile-menu">
+			<button class:active={activeTab === 'bookings'} on:click={() => { activeTab = 'bookings'; menuOpen = false; }}>
+				Bookings
+				{#if pendingCount > 0}<span class="nav-badge">{pendingCount}</span>{/if}
+			</button>
+			<button class:active={activeTab === 'availability'} on:click={() => { activeTab = 'availability'; menuOpen = false; }}>
+				Availability
+			</button>
+			<button class:active={activeTab === 'contacts'} on:click={() => { activeTab = 'contacts'; menuOpen = false; }}>
+				Contact Submissions
+				{#if unreadCount > 0}<span class="nav-badge">{unreadCount}</span>{/if}
+			</button>
+			<button class="menu-logout" on:click={logout}>Log out</button>
+		</nav>
+	{/if}
+
 	<!-- Sidebar -->
 	<aside class="sidebar">
 		<div class="brand">
@@ -527,16 +565,20 @@
 </div>
 
 <style>
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
 	:global(body) {
 		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-		background: #1a1a1a;
+		background: #1f1f1f;
 		color: #ffffff;
 		line-height: 1.65;
 		margin: 0;
 		padding: 0;
 	}
-
-	* { box-sizing: border-box; margin: 0; padding: 0; }
 
 	.page {
 		display: flex;
@@ -908,50 +950,90 @@
 	.unread-dot { color: #3ecf8e; font-size: 0.6rem; margin-left: 0.35rem; vertical-align: middle; }
 
 	/* ── Mobile ── */
+	/* ── Mobile header (hidden on desktop) ── */
+	.mobile-header {
+		display: none;
+		background: #f68b1f;
+		height: 64px;
+		padding: 0 1.25rem;
+		align-items: center;
+		justify-content: space-between;
+		position: sticky; top: 0; z-index: 150;
+		flex-shrink: 0;
+	}
+
+	.mobile-brand {
+		display: flex; align-items: center; gap: 0.6rem;
+		font-weight: 800; font-size: 1rem; color: #fff;
+	}
+
+	.hamburger {
+		display: flex; flex-direction: column; justify-content: center;
+		align-items: center; gap: 5px;
+		background: none; border: none; cursor: pointer;
+		padding: 6px; border-radius: 6px; width: 44px; height: 44px;
+	}
+	.hamburger:hover { background: rgba(255,255,255,0.15); }
+	.bar {
+		display: block; width: 24px; height: 2.5px;
+		background: #fff; border-radius: 2px;
+		transition: transform 0.25s ease, opacity 0.25s ease;
+		transform-origin: center;
+	}
+	.hamburger[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+	.hamburger[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+	.hamburger[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+	.mobile-overlay {
+		display: none;
+		position: fixed; inset: 0; top: 64px; z-index: 148;
+	}
+
+	.mobile-menu {
+		display: none;
+		flex-direction: column;
+		background: #e07a18;
+		width: 100%;
+		padding: 0.5rem 0 1rem;
+		position: absolute; top: 64px; left: 0; right: 0;
+		z-index: 149;
+		box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+		animation: slideDown 0.2s ease;
+	}
+
+	@keyframes slideDown {
+		from { opacity: 0; transform: translateY(-8px); }
+		to   { opacity: 1; transform: translateY(0); }
+	}
+
+	.mobile-menu button {
+		background: none; border: none; color: #fff;
+		font-weight: 800; font-size: 1.05rem; font-family: inherit;
+		cursor: pointer; text-align: left;
+		padding: 0.9rem 1.5rem; width: 100%;
+		border-bottom: 1px solid rgba(255,255,255,0.12);
+		display: flex; align-items: center; justify-content: space-between;
+	}
+	.mobile-menu button:last-child { border-bottom: none; }
+	.mobile-menu button:hover { background: rgba(255,255,255,0.1); }
+	.mobile-menu button.active { color: #1f1f1f; }
+	.menu-logout { color: rgba(255,255,255,0.7) !important; }
+
 	@media (max-width: 640px) {
 		.sidebar { display: none; }
-		.main { padding: 1rem 0.875rem 5rem; }
-		.mobile-nav { display: flex; }
+		.mobile-header { display: flex; }
+		.mobile-overlay { display: block; }
+		.mobile-menu { display: flex; }
+		.page { flex-direction: column; }
+		.main { padding: 1.25rem 1rem 2rem; }
 		.avail-grid { grid-template-columns: 1fr; }
 		.day-row { flex-wrap: wrap; gap: 0.5rem; }
 		.time-range { margin-left: 0; width: 100%; }
 		.booking-meta { gap: 0.4rem 0.75rem; }
-		.booking-actions { flex-wrap: wrap; }
 		.section-header h1 { font-size: 1.25rem; }
-		.filter-row { gap: 0.35rem; }
+		.filter-row { gap: 0.35rem; flex-wrap: wrap; }
 		.filter-btn { font-size: 0.75rem; padding: 0.4rem 0.65rem; }
 		.blocked-add { flex-direction: column; }
 		.date-input { min-width: unset; width: 100%; }
-	}
-
-	.mobile-nav {
-		display: none;
-		position: fixed;
-		bottom: 0; left: 0; right: 0;
-		background: #222;
-		border-top: 1px solid rgba(255,255,255,0.1);
-		z-index: 200;
-		padding: 0.5rem 0 0.75rem;
-	}
-
-	:global(.mobile-nav button) {
-		flex: 1;
-		display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
-		background: none; border: none; color: #888;
-		font-size: 0.65rem; font-weight: 700; font-family: inherit;
-		cursor: pointer; padding: 0.4rem 0;
-		transition: color 0.15s;
-		position: relative;
-	}
-
-	:global(.mobile-nav button.active) { color: #f68b1f; }
-
-	:global(.mobile-nav svg) { flex-shrink: 0; }
-
-	.mob-badge {
-		position: absolute; top: 0; right: calc(50% - 18px);
-		background: #f68b1f; color: #fff;
-		font-size: 0.6rem; font-weight: 800;
-		padding: 0.05rem 0.35rem; border-radius: 50px;
 	}
 </style>

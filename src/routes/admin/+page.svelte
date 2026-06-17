@@ -85,6 +85,12 @@
 </div>
 
 <style>
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
 	:global(body) {
 		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
 		background: #1f1f1f;
@@ -93,8 +99,6 @@
 		margin: 0;
 		padding: 0;
 	}
-
-	* { box-sizing: border-box; margin: 0; padding: 0; }
 
 	.page {
 		min-height: 100vh;

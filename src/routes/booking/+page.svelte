@@ -406,13 +406,20 @@
 </section>
 
 <style global>
-	* { box-sizing: border-box; margin: 0; padding: 0; }
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
 
 	:global(body) {
 		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-		background: #1f1f1f; color: #fff; line-height: 1.65;
+		background: #1f1f1f;
+		color: #ffffff;
+		line-height: 1.65;
+		margin: 0;
+		padding: 0;
 	}
-
 	/* ── Navbar ── */
 	.navbar {
 		background: #f68b1f; height: 80px; display: flex;
