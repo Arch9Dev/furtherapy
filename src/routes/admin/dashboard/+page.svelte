@@ -973,7 +973,7 @@
 		background: none; border: none; cursor: pointer;
 		padding: 6px; border-radius: 6px; width: 44px; height: 44px;
 	}
-	.hamburger:hover { background: rgba(255,255,255,0.15); }
+	.hamburger:hover { background: #ffffff26; }
 	.bar {
 		display: block; width: 24px; height: 2.5px;
 		background: #fff; border-radius: 2px;
@@ -997,7 +997,7 @@
 		padding: 0.5rem 0 1rem;
 		position: absolute; top: 64px; left: 0; right: 0;
 		z-index: 149;
-		box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+		box-shadow: 0 8px 20px #0000004d;
 		animation: slideDown 0.2s ease;
 	}
 
@@ -1011,13 +1011,13 @@
 		font-weight: 800; font-size: 1.05rem; font-family: inherit;
 		cursor: pointer; text-align: left;
 		padding: 0.9rem 1.5rem; width: 100%;
-		border-bottom: 1px solid rgba(255,255,255,0.12);
+		border-bottom: 1px solid #ffffff1f;
 		display: flex; align-items: center; justify-content: space-between;
 	}
 	.mobile-menu button:last-child { border-bottom: none; }
-	.mobile-menu button:hover { background: rgba(255,255,255,0.1); }
+	.mobile-menu button:hover { background: #ffffff1a; }
 	.mobile-menu button.active { color: #1f1f1f; }
-	.menu-logout { color: rgba(255,255,255,0.7) !important; }
+	.menu-logout { color: #ffffffb3 !important; }
 
 	@media (max-width: 640px) {
 		.sidebar { display: none; }

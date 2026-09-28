@@ -1,20 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { formatTime, SERVICE_LABELS } from '$lib/bookingHelpers';
-
-	// ── Nav ──────────────────────────────────────────────────────────
-	const navLinks = [
-		{ name: 'Home', route: '/' },
-		{ name: 'About', route: '/about' },
-		{ name: 'Services', route: '/services' },
-		{ name: 'Education', route: '/education' },
-		{ name: 'Contact', route: '/contact' }
-	];
-	$: currentRoute = $page.url.pathname;
-	let menuOpen = false;
-	function navigateTo(route: string) { menuOpen = false; goto(route); }
-	function toggleMenu() { menuOpen = !menuOpen; }
 
 	// ── Step state ───────────────────────────────────────────────────
 	let step = 1; // 1=service, 2=customer type, 3=details, 4=date, 5=time, 6=confirm, 7=done
@@ -135,53 +121,19 @@
 </script>
 
 <svelte:head>
-	<title>Book an Appointment | Fur Therapy</title>
+	<title>Book a Canine Massage Session | FurTherapy Auckland</title>
+	<meta name="description" content="Book a canine massage and bodywork session with FurTherapy in Mission Bay, Auckland. Choose a service, pick a date and time, and confirm online." />
 </svelte:head>
 
-<!-- NAV BAR -->
-<header class="navbar">
-	<div class="nav-container">
-		<div class="brand desktop-brand">
-			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
-				<img src="logo_white.png" alt="Fur Therapy Logo" />
-			</a>
-		</div>
-		<div class="brand mobile-brand">
-			<a href="/" on:click|preventDefault={() => navigateTo('/')} aria-label="Fur Therapy home">
-				<div class="logo-placeholder" aria-hidden="true">FT</div>
-			</a>
-		</div>
-		<nav class="nav-links" aria-label="Primary navigation">
-			{#each navLinks as link}
-				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
-					{link.name}
-				</button>
-			{/each}
-		</nav>
-		<button class="hamburger" on:click={toggleMenu}
-			aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
-			<span class="bar" class:open={menuOpen}></span>
-			<span class="bar" class:open={menuOpen}></span>
-			<span class="bar" class:open={menuOpen}></span>
-		</button>
-	</div>
-	{#if menuOpen}
-		<div class="mobile-overlay" on:click={() => (menuOpen = false)} role="presentation"></div>
-		<nav class="mobile-menu" aria-label="Mobile navigation">
-			{#each navLinks as link}
-				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
-					{link.name}
-				</button>
-			{/each}
-		</nav>
-	{/if}
-</header>
-
+<main>
 <!-- HERO -->
-<section class="hero">
-	<div class="hero-inner">
-		<h1 class="title">Book an Appointment</h1>
-		<p class="subtitle">Canine massage & bodywork, Mission Bay Auckland</p>
+<section class="page-hero" aria-labelledby="booking-heading">
+	<div class="container">
+		<div>
+			<p class="eyebrow">Booking</p>
+			<h1 id="booking-heading">Book a session</h1>
+			<p class="page-hero-sub">Canine massage &amp; bodywork, Mission Bay Auckland. It takes about a minute.</p>
+		</div>
 	</div>
 </section>
 
@@ -404,65 +356,11 @@
 
 	</div>
 </section>
+</main>
 
-<style global>
-	* {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-	}
-
-	:global(body) {
-		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-		background: #1f1f1f;
-		color: #ffffff;
-		line-height: 1.65;
-		margin: 0;
-		padding: 0;
-	}
-	/* ── Navbar ── */
-	.navbar {
-		background: #f68b1f; height: 80px; display: flex;
-		flex-direction: column; position: sticky; top: 0; z-index: 100;
-	}
-	.nav-container {
-		width: 100%; height: 80px; padding: 0 2rem;
-		display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
-	}
-	.desktop-brand img { height: 45px; }
-	.mobile-brand { display: none; }
-	.logo-placeholder {
-		width: 38px; height: 38px; background: rgba(255,255,255,0.25);
-		border-radius: 8px; display: flex; align-items: center; justify-content: center;
-		font-weight: 900; font-size: 1rem; color: #fff;
-	}
-	.nav-links { display: flex; align-items: center; }
-	.nav-links button {
-		color: #fff; background: none; border: none; cursor: pointer;
-		font-weight: 800; font-size: 1.1rem; margin-left: 1.5rem; font-family: inherit;
-	}
-	.nav-links button:hover { text-decoration: underline; }
-	.nav-links button.active { color: #1f1f1f; }
-	.hamburger {
-		display: none; flex-direction: column; justify-content: center;
-		align-items: center; gap: 5px; background: none; border: none; cursor: pointer;
-		padding: 6px; border-radius: 6px; width: 44px; height: 44px;
-	}
-	.bar {
-		display: block; width: 24px; height: 2.5px; background: #fff;
-		border-radius: 2px; transition: transform 0.25s, opacity 0.25s;
-	}
-	.mobile-overlay { display: none; }
-	.mobile-menu { display: none; }
-
-	/* ── Hero ── */
-	.hero { height: 220px; display: flex; align-items: center; background: #2a2a2a; }
-	.hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-	.title { font-size: 2.5rem; font-weight: 800; }
-	.subtitle { font-size: 1.2rem; margin-top: 0.75rem; font-weight: 300; color: #ccc; }
-
+<style>
 	/* ── Wizard section ── */
-	.wizard-section { padding: 3rem 1.5rem 5rem; }
+	.wizard-section { padding: 3rem 1.5rem 5rem; background: var(--color-bg); }
 	.wizard-container { max-width: 760px; margin: 0 auto; }
 
 	/* ── Progress bar ── */
@@ -488,7 +386,7 @@
 	/* ── Step card ── */
 	.step-card {
 		background: #2a2a2a; border-radius: 16px; padding: 2rem 2rem 2.5rem;
-		box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+		box-shadow: 0 10px 30px #0000004d;
 	}
 	.step-card h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
 	.step-sub { color: #aaa; font-size: 0.95rem; margin-bottom: 1.5rem; }
@@ -500,8 +398,8 @@
 		padding: 1.5rem; cursor: pointer; text-align: left; color: #fff;
 		font-family: inherit; transition: border-color 0.2s, background 0.2s;
 	}
-	.service-card:hover { border-color: #f68b1f; background: rgba(246,139,31,0.05); }
-	.service-card.selected { border-color: #f68b1f; background: rgba(246,139,31,0.1); }
+	.service-card:hover { border-color: #f68b1f; background: #f68b1f0d; }
+	.service-card.selected { border-color: #f68b1f; background: #f68b1f1a; }
 	.service-icon { font-size: 2rem; margin-bottom: 0.75rem; }
 	.service-name { font-size: 1.1rem; font-weight: 800; }
 	.service-detail { font-size: 0.85rem; color: #aaa; margin-top: 0.25rem; }
@@ -514,7 +412,7 @@
 		padding: 1.5rem; cursor: pointer; text-align: center; color: #fff;
 		font-family: inherit; transition: border-color 0.2s, background 0.2s;
 	}
-	.type-card:hover { border-color: #f68b1f; background: rgba(246,139,31,0.05); }
+	.type-card:hover { border-color: #f68b1f; background: #f68b1f0d; }
 	.type-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 	.type-name { font-size: 1rem; font-weight: 800; }
 	.type-detail { font-size: 0.85rem; color: #aaa; margin-top: 0.25rem; }
@@ -524,7 +422,7 @@
 	.form-field { display: flex; flex-direction: column; gap: 0.4rem; }
 	.form-field label { font-size: 0.85rem; font-weight: 700; color: #e0e0e0; letter-spacing: 0.04em; }
 	.form-field input {
-		background: #1f1f1f; border: 1px solid rgba(255,255,255,0.12);
+		background: #1f1f1f; border: 1px solid #ffffff1f;
 		border-radius: 8px; padding: 0.75rem 1rem; color: #fff;
 		font-size: 1rem; font-family: inherit; transition: border-color 0.2s;
 	}
@@ -559,16 +457,16 @@
 	}
 	.cal-cell.empty { background: transparent; }
 	.cal-cell.available {
-		background: rgba(58, 158, 110, 0.15); color: #5ecf9a; cursor: pointer;
-		border: 1px solid rgba(58, 158, 110, 0.3);
+		background: #3a9e6e26; color: #5ecf9a; cursor: pointer;
+		border: 1px solid #3a9e6e4d;
 	}
-	.cal-cell.available:hover { background: rgba(58, 158, 110, 0.3); }
+	.cal-cell.available:hover { background: #3a9e6e4d; }
 	.cal-cell.selected { background: #f68b1f !important; color: #fff !important; border-color: #f68b1f !important; }
 	.cal-cell.unavailable { color: #3a3a3a; cursor: not-allowed; }
 
 	.cal-legend { display: flex; gap: 1.25rem; font-size: 0.8rem; color: #888; margin-bottom: 1.25rem; align-items: center; }
 	.legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 4px; }
-	.legend-dot.available { background: rgba(58,158,110,0.4); border: 1px solid rgba(58,158,110,0.6); }
+	.legend-dot.available { background: #3a9e6e66; border: 1px solid #3a9e6e99; }
 	.legend-dot.unavailable { background: #2a2a2a; border: 1px solid #333; }
 
 	/* ── Time slots ── */
@@ -586,20 +484,20 @@
 	.summary-table { background: #1f1f1f; border-radius: 10px; overflow: hidden; margin: 1.25rem 0; }
 	.summary-row {
 		display: flex; justify-content: space-between; padding: 0.85rem 1.25rem;
-		border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.95rem;
+		border-bottom: 1px solid #ffffff12; font-size: 0.95rem;
 	}
 	.summary-row:last-child { border-bottom: none; }
 	.summary-row span:first-child { color: #888; }
 	.summary-row span:last-child { font-weight: 600; text-align: right; }
 
 	.pending-note {
-		background: rgba(246,139,31,0.1); border: 1px solid rgba(246,139,31,0.25);
+		background: #f68b1f1a; border: 1px solid #f68b1f40;
 		border-radius: 8px; padding: 0.85rem 1.1rem; font-size: 0.9rem;
 		color: #f0c080; margin-bottom: 1.5rem;
 	}
 
 	.error-msg {
-		background: rgba(224,82,82,0.15); border: 1px solid rgba(224,82,82,0.4);
+		background: #e0525226; border: 1px solid #e0525266;
 		color: #f08080; border-radius: 8px; padding: 0.75rem 1rem;
 		font-size: 0.9rem; margin-bottom: 1rem;
 	}
@@ -618,36 +516,8 @@
 		cursor: pointer; font-family: inherit; padding: 0.5rem 0;
 	}
 	.back-btn:hover { color: #fff; }
-	.btn-primary {
-		display: inline-block; padding: 0.85rem 2rem; background: #f68b1f;
-		color: #fff; font-weight: 800; font-size: 1rem; border-radius: 50px;
-		text-decoration: none; border: none; cursor: pointer; font-family: inherit;
-		transition: opacity 0.2s, transform 0.2s;
-	}
-	.btn-primary:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-	.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
 	/* ── Responsive ── */
-	@media (max-width: 1024px) {
-		.desktop-brand { display: none; }
-		.mobile-brand { display: block; }
-		.nav-links { display: none; }
-		.hamburger { display: flex; }
-		.mobile-menu {
-			display: flex; flex-direction: column; background: #e07a18; width: 100%;
-			padding: 0.5rem 0 1rem; position: absolute; top: 80px; left: 0; right: 0;
-			z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-		}
-		.mobile-overlay { display: block; position: fixed; inset: 0; top: 80px; z-index: 98; }
-		.mobile-menu button {
-			background: none; border: none; color: #fff; font-weight: 800; font-size: 1.1rem;
-			font-family: inherit; cursor: pointer; text-align: left;
-			padding: 0.9rem 2rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12);
-		}
-		.mobile-menu button:last-child { border-bottom: none; }
-		.mobile-menu button.active { color: #1f1f1f; }
-	}
-
 	@media (max-width: 640px) {
 		.service-cards { grid-template-columns: 1fr; }
 		.type-cards { grid-template-columns: 1fr; }
@@ -656,7 +526,6 @@
 		.step-card { padding: 1.5rem 1.25rem 2rem; }
 		.progress-bar { gap: 0; }
 		.step-label { font-size: 0.6rem; }
-		.title { font-size: 1.8rem; }
 	}
 
 	@media (max-width: 400px) {

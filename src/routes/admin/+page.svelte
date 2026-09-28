@@ -149,8 +149,8 @@
 	}
 
 	.error {
-		background: rgba(224, 82, 82, 0.15);
-		border: 1px solid rgba(224, 82, 82, 0.4);
+		background: #e0525226;
+		border: 1px solid #e0525266;
 		color: #f08080;
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
@@ -182,7 +182,7 @@
 
 	input {
 		background: #1f1f1f;
-		border: 1px solid rgba(255,255,255,0.12);
+		border: 1px solid #ffffff1f;
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
 		color: #fff;

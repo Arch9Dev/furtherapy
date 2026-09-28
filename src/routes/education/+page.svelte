@@ -1,218 +1,246 @@
-<script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+<svelte:head>
+	<title>Canine Massage Education &amp; Mentorship NZ | FurTherapy</title>
+	<meta
+		name="description"
+		content="Education and one-to-one mentorship in canine massage and bodywork for aspiring practitioners, therapy professionals and dog owners across New Zealand, with Marisa Du Toit."
+	/>
+</svelte:head>
 
-	const navLinks = [
-		{ name: 'Home', route: '/' },
-		{ name: 'About', route: '/about' },
-		{ name: 'Services', route: '/services' },
-		{ name: 'Education', route: '/education' },
-		{ name: 'Contact', route: '/contact' }
-	];
-
-	$: currentRoute = $page.url.pathname;
-
-	function navigateTo(route: string) {
-		menuOpen = false;
-		goto(route);
-	}
-
-	let menuOpen = false;
-	function toggleMenu() { menuOpen = !menuOpen; }
-</script>
-
-<!-- NAV BAR -->
-<header class="navbar">
-	<div class="nav-container">
-		<div class="brand desktop-brand">
-			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
-				<img src="logo_white.png" alt="FurTherapy Logo" />
-			</a>
+<main>
+	<section class="page-hero" aria-labelledby="edu-heading">
+		<div class="container">
+			<div>
+				<p class="eyebrow">Education &amp; Mentorship</p>
+				<h1 id="edu-heading">Grow your confidence in canine wellness</h1>
+				<p class="page-hero-sub">
+					Sharing knowledge with the canine wellness community across New Zealand — safe,
+					ethical and effective techniques that improve canine wellbeing.
+				</p>
+			</div>
 		</div>
-		<div class="brand mobile-brand">
-			<a href="/" on:click|preventDefault={() => navigateTo('/')}>
-				<div class="logo-placeholder">FT</div>
-			</a>
+	</section>
+
+	<section class="section" aria-labelledby="who-heading">
+		<div class="container">
+			<div class="section-heading">
+				<p class="eyebrow">Who It's For</p>
+				<h2 id="who-heading">Whether you're just beginning or expanding your skills</h2>
+			</div>
+			<div class="card-grid three">
+				<article class="card">
+					<h3>Aspiring canine massage practitioners</h3>
+					<p>Start your journey with guided learning and one-to-one mentorship.</p>
+				</article>
+				<article class="card">
+					<h3>Therapy professionals</h3>
+					<p>Expand your professional skillset with canine-specific knowledge.</p>
+				</article>
+				<article class="card">
+					<h3>Dedicated dog owners</h3>
+					<p>Better understand your own dog's body, comfort and movement.</p>
+				</article>
+			</div>
 		</div>
+	</section>
 
-		<nav class="nav-links">
-			{#each navLinks as link}
-				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
-					{link.name}
-				</button>
-			{/each}
-		</nav>
-
-		<button class="hamburger" on:click={toggleMenu} aria-label="Toggle navigation menu" aria-expanded={menuOpen}>
-			<span class="bar"></span>
-			<span class="bar"></span>
-			<span class="bar"></span>
-		</button>
-	</div>
-
-	{#if menuOpen}
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_interactive_supports_focus -->
-		<div class="mobile-overlay" on:click={() => (menuOpen = false)} role="presentation"></div>
-		<nav class="mobile-menu">
-			{#each navLinks as link}
-				<button class:active={link.route === currentRoute} on:click={() => navigateTo(link.route)}>
-					{link.name}
-				</button>
-			{/each}
-		</nav>
-	{/if}
-</header>
-
-<!-- EDUCATION SECTION -->
-<section class="hero" id="education">
-	<div class="hero-inner">
-		<h1 class="title">Education & Mentorship</h1>
-		<div class="content">
-			<p>
-				At FurTherapy, I am committed not only to supporting dogs through professional bodywork, but
-				also to sharing my knowledge and helping you grow confidence within the canine wellness
-				community across New Zealand.
-			</p>
-			<p>
-				I provide education and mentorship for aspiring canine massage practitioners, therapy
-				professionals, and dedicated dog owners who want to better understand canine anatomy,
-				movement, comfort, and therapeutic touch. Through guided learning, practical advice, and
-				one-to-one mentorship, my goal is to empower you with safe, ethical, and effective
-				techniques that improve canine wellbeing.
-			</p>
-			<p>
-				Whether you are just beginning or looking to expand your professional skillset, I offer
-				supportive, accessible education tailored for the New Zealand community.
-			</p>
+	<section class="section section-alt" aria-labelledby="learn-heading">
+		<div class="container split">
+			<div>
+				<p class="eyebrow">What You'll Explore</p>
+				<h2 id="learn-heading">Understanding how dogs move and feel</h2>
+				<div class="prose lead">
+					<p>
+						Education covers the foundations that good bodywork is built on, delivered in a
+						supportive, accessible way tailored for the New Zealand community.
+					</p>
+				</div>
+			</div>
+			<ul class="topic-list">
+				<li>Canine anatomy</li>
+				<li>Movement</li>
+				<li>Comfort</li>
+				<li>Therapeutic touch</li>
+			</ul>
 		</div>
-	</div>
-</section>
+	</section>
 
-<style global>
-	* {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
+	<section class="section" aria-labelledby="how-heading">
+		<div class="container">
+			<div class="section-heading">
+				<p class="eyebrow">How It Works</p>
+				<h2 id="how-heading">Learning that meets you where you are</h2>
+			</div>
+			<ol class="steps">
+				<li>
+					<span class="num">01</span>
+					<h3>Guided learning</h3>
+					<p>Structured teaching that builds your understanding step by step.</p>
+				</li>
+				<li>
+					<span class="num">02</span>
+					<h3>Practical advice</h3>
+					<p>Real-world guidance you can apply with confidence.</p>
+				</li>
+				<li>
+					<span class="num">03</span>
+					<h3>One-to-one mentorship</h3>
+					<p>Personal support as you develop your skills.</p>
+				</li>
+			</ol>
+		</div>
+	</section>
+
+	<section class="section section-alt" aria-labelledby="mentor-heading">
+		<div class="container mentor">
+			<div class="mentor-image">
+				<img src="/instructor.jpg" alt="Canis Bodyworks Certificate of Completion" loading="lazy" />
+			</div>
+			<div>
+				<p class="eyebrow">Your Mentor</p>
+				<h2 id="mentor-heading">Marisa Du Toit</h2>
+				<div class="prose lead">
+					<p>
+						Marisa is a Nationally Board Certified Canine Massage Practitioner (NBCAAM) and the
+						instructor for the Canis Bodyworks Mentorship Program within New Zealand — a
+						300-hour hands-on canine massage mentorship.
+					</p>
+				</div>
+				<a href="/about" class="btn-secondary">Meet Marisa</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="cta-band" aria-labelledby="edu-cta-heading">
+		<h2 id="edu-cta-heading">Interested in learning with FurTherapy?</h2>
+		<p>Get in touch to ask about education and mentorship.</p>
+		<div class="cta-band-actions">
+			<a href="/contact" class="btn-primary">Get in Touch</a>
+			<a href="/services" class="btn-secondary">Explore Services</a>
+		</div>
+	</section>
+</main>
+
+<style>
+	.card-grid {
+		display: grid;
+		gap: 1.75rem;
+	}
+	.card-grid.three {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.card {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-top: 3px solid var(--color-orange);
+		border-radius: var(--radius-md);
+		padding: 1.8rem 1.6rem;
+	}
+	.card h3 {
+		margin-bottom: 0.5rem;
+	}
+	.card p {
+		color: var(--color-text-muted);
+		font-size: 0.97rem;
 	}
 
-	:global(body) {
-		font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-		background: #1f1f1f;
-		color: #ffffff;
-		line-height: 1.65;
-		margin: 0;
-		padding: 0;
+	.split {
+		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
+		gap: 3.5rem;
+		align-items: center;
 	}
-	/* --- NAVBAR --- */
-	.navbar {
-		background: #f68b1f; height: 80px; display: flex; flex-direction: column;
-		position: sticky; top: 0; z-index: 100;
+	.lead {
+		margin-top: 1.25rem;
 	}
-	.nav-container {
-		width: 100%; height: 80px; padding: 0 2rem;
-		display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+	.topic-list {
+		list-style: none;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
 	}
-	.desktop-brand img { height: 45px; }
-	.mobile-brand { display: none; }
-	.logo-placeholder {
-		width: 38px; height: 38px; background: rgba(255,255,255,0.25); border-radius: 8px;
-		display: flex; align-items: center; justify-content: center;
-		font-weight: 900; font-size: 1rem; color: #fff;
+	.topic-list li {
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		padding: 1.4rem 1.2rem;
+		font-weight: 800;
+		position: relative;
+		padding-left: 2.6rem;
 	}
-	.nav-links { display: flex; align-items: center; }
-	.nav-links button {
-		color: #fff; background: none; border: none; cursor: pointer;
-		font-weight: 800; font-size: 1.1rem; margin-left: 1.5rem; font-family: inherit;
+	.topic-list li::before {
+		content: '✓';
+		position: absolute;
+		left: 1.1rem;
+		color: var(--color-orange);
 	}
-	.nav-links button:hover { text-decoration: underline; }
-	.nav-links button.active { color: #1f1f1f; }
 
-	.hamburger {
-		display: none; flex-direction: column; justify-content: center; align-items: center;
-		gap: 5px; background: none; border: none; cursor: pointer;
-		padding: 6px; border-radius: 6px; width: 44px; height: 44px;
+	.steps {
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.75rem;
 	}
-	.hamburger:hover { background: rgba(255,255,255,0.15); }
-	.bar {
-		display: block; width: 24px; height: 2.5px; background: #fff;
-		border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease;
+	.steps li {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		padding: 1.8rem 1.6rem;
 	}
-	.hamburger[aria-expanded='true'] .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-	.hamburger[aria-expanded='true'] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-	.hamburger[aria-expanded='true'] .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+	.num {
+		display: block;
+		font-size: 1.6rem;
+		font-weight: 900;
+		color: var(--color-orange);
+		margin-bottom: 0.5rem;
+	}
+	.steps h3 {
+		margin-bottom: 0.4rem;
+	}
+	.steps p {
+		color: var(--color-text-muted);
+		font-size: 0.95rem;
+	}
 
-	.mobile-menu {
-		display: none; flex-direction: column; background: #e07a18; width: 100%;
-		padding: 0.5rem 0 1rem; position: absolute; top: 80px; left: 0; right: 0;
-		z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.3); animation: slideDown 0.2s ease;
+	.mentor {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 3.5rem;
+		align-items: center;
 	}
-	.mobile-overlay { display: none; }
-	@keyframes slideDown {
-		from { opacity: 0; transform: translateY(-8px); }
-		to   { opacity: 1; transform: translateY(0); }
+	.mentor-image {
+		background: #fff;
+		border-radius: var(--radius-lg);
+		padding: 1.25rem;
+		box-shadow: var(--shadow-md);
 	}
-	.mobile-menu button {
-		background: none; border: none; color: #fff; font-weight: 800; font-size: 1.1rem;
-		font-family: inherit; cursor: pointer; text-align: left;
-		padding: 0.9rem 2rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12);
+	.mentor-image img {
+		width: 100%;
+		display: block;
+		border-radius: var(--radius-sm);
 	}
-	.mobile-menu button:last-child { border-bottom: none; }
-	.mobile-menu button:hover { background: rgba(255,255,255,0.1); }
-	.mobile-menu button.active { color: #1f1f1f; }
-
-	/* --- EDUCATION --- */
-	.hero {
-		min-height: 250px; display: flex; align-items: center;
-		padding: 4rem 0; background: #2a2a2a;
+	.mentor .btn-secondary {
+		margin-top: 1.75rem;
 	}
-	.hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
-	.title { font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; line-height: 1.2; }
-
-	.content p {
-		font-size: 1.125rem; margin-bottom: 1.5rem;
-		font-weight: 300; line-height: 1.8; color: #e0e0e0;
-	}
-	.content p:last-child { margin-bottom: 0; }
-
-	/* ================================================================
-	   RESPONSIVE
-	   ================================================================ */
-
-	/* --- Tablet (≤ 1024px) --- */
 	@media (max-width: 1024px) {
-		.desktop-brand { display: none; }
-		.mobile-brand  { display: block; }
-		.nav-links     { display: none; }
-		.hamburger     { display: flex; }
-		.mobile-menu   { display: flex; }
-		.mobile-overlay {
-			display: block; position: fixed; inset: 0; top: 80px; z-index: 98;
+		.split,
+		.mentor {
+			grid-template-columns: 1fr;
+			gap: 2rem;
 		}
-
-		.title { font-size: 2rem; margin-bottom: 1.75rem; }
-		.hero  { padding: 3.5rem 0; }
-		.content p { font-size: 1.05rem; }
+		.mentor-image {
+			max-width: 460px;
+		}
 	}
-
-	/* --- Mobile (≤ 767px) --- */
 	@media (max-width: 767px) {
-		.title { font-size: 1.65rem; margin-bottom: 1.5rem; }
-		.hero  { padding: 2.5rem 0; min-height: unset; }
-		.hero-inner { padding: 0 1.25rem; }
-		.content p  { font-size: 0.975rem; line-height: 1.75; margin-bottom: 1.25rem; }
+		.card-grid.three,
+		.steps {
+			grid-template-columns: 1fr;
+		}
 	}
-
-	/* --- Small phones (≤ 479px) --- */
-	@media (max-width: 479px) {
-		.nav-container { padding: 0 1rem; }
-		.logo-placeholder { width: 34px; height: 34px; font-size: 0.875rem; }
-		.mobile-menu button { font-size: 1rem; padding: 0.85rem 1.25rem; }
-
-		.title { font-size: 1.4rem; margin-bottom: 1.25rem; }
-		.hero  { padding: 2rem 0; }
-		.hero-inner { padding: 0 1rem; }
-		.content p { font-size: 0.9375rem; }
+	@media (max-width: 420px) {
+		.topic-list {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
