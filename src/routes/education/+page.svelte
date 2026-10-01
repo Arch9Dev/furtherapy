@@ -13,7 +13,7 @@
 				<p class="eyebrow">Education &amp; Mentorship</p>
 				<h1 id="edu-heading">Grow your confidence in canine wellness</h1>
 				<p class="page-hero-sub">
-					Sharing knowledge with the canine wellness community across New Zealand — safe,
+					Sharing knowledge with the canine wellness community across New Zealand - safe,
 					ethical and effective techniques that improve canine wellbeing.
 				</p>
 			</div>
@@ -102,7 +102,7 @@
 					<p>
 						Marisa is a Nationally Board Certified Canine Massage Practitioner (NBCAAM) and the
 						instructor for the Canis Bodyworks Mentorship Program within New Zealand — a
-						300-hour hands-on canine massage mentorship.
+						300-hour hands-on canine masscaamage mentorship.
 					</p>
 				</div>
 				<a href="/about" class="btn-secondary">Meet Marisa</a>
