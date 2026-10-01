@@ -18,6 +18,9 @@
 	const showNav = $derived(!page.url.pathname.startsWith('/admin'));
 	const path = $derived(page.url.pathname);
 
+	const SITE_URL = 'https://furtherapy.co.nz';
+	const canonicalUrl = $derived(SITE_URL + (path === '/' ? '/' : path.replace(/\/$/, '')));
+
 	function isCurrent(route: string) {
 		return route === '/' ? path === '/' : path === route || path.startsWith(route + '/');
 	}
@@ -30,6 +33,18 @@
 <svelte:head>
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<meta name="theme-color" content="#f68b1f" />
+	{#if showNav}
+		<link rel="canonical" href={canonicalUrl} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="FurTherapy" />
+		<meta property="og:locale" content="en_NZ" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content="{SITE_URL}/og-image.jpg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="FurTherapy - Canine Massage and Bodywork, Mission Bay, Auckland" />
+		<meta name="twitter:card" content="summary_large_image" />
+	{/if}
 </svelte:head>
 
 <svelte:window onkeydown={(e) => e.key === 'Escape' && closeMenu()} />

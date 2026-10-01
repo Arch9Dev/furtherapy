@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDb } from '$lib/db';
+import { isAdmin } from '$lib/sessions';
 
 // GET /api/availability
 export const GET: RequestHandler = async () => {
@@ -12,7 +13,7 @@ export const GET: RequestHandler = async () => {
 
 // PUT /api/availability — update weekly hours + blocked dates (admin only)
 export const PUT: RequestHandler = async ({ request, cookies }) => {
-	if (cookies.get('ft_admin_session') !== 'authenticated') {
+	if (!isAdmin(cookies)) {
 		return json({ error: 'Unauthorised' }, { status: 401 });
 	}
 	const db = getDb();
@@ -20,6 +21,28 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 	if (!body) return json({ error: 'Invalid request body.' }, { status: 400 });
 
 	const { weekly, blockedDates } = body;
+
+	const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+	const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+	const weeklyValid =
+		Array.isArray(weekly) &&
+		weekly.every(
+			(d) =>
+				Number.isInteger(d?.day_of_week) &&
+				d.day_of_week >= 0 &&
+				d.day_of_week <= 6 &&
+				(!d.is_open ||
+					(TIME_RE.test(d.open_time ?? '') &&
+						TIME_RE.test(d.close_time ?? '') &&
+						d.open_time < d.close_time))
+		);
+	const blockedValid =
+		blockedDates === undefined ||
+		(Array.isArray(blockedDates) &&
+			blockedDates.every((d) => typeof d === 'string' && DATE_RE.test(d)));
+	if (!weeklyValid || !blockedValid) {
+		return json({ error: 'Invalid availability data.' }, { status: 400 });
+	}
 
 	// Update weekly availability
 	const updateDay = db.prepare(`

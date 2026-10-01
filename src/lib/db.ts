@@ -55,6 +55,11 @@ function initSchema(db: Database.Database) {
 			created_at TEXT NOT NULL DEFAULT (datetime('now'))
 		);
 
+		CREATE TABLE IF NOT EXISTS admin_sessions (
+			token_hash TEXT PRIMARY KEY,
+			expires_at INTEGER NOT NULL
+		);
+
 		CREATE INDEX IF NOT EXISTS idx_bookings_date_status ON bookings (date, status);
 		CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings (status);
 	`);

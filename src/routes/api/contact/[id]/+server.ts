@@ -1,10 +1,11 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDb } from '$lib/db';
+import { isAdmin } from '$lib/sessions';
 
 // PATCH /api/contact/[id] — mark as read
 export const PATCH: RequestHandler = async ({ params, cookies }) => {
-	if (cookies.get('ft_admin_session') !== 'authenticated') {
+	if (!isAdmin(cookies)) {
 		return json({ error: 'Unauthorised' }, { status: 401 });
 	}
 	const db = getDb();
@@ -14,7 +15,7 @@ export const PATCH: RequestHandler = async ({ params, cookies }) => {
 
 // DELETE /api/contact/[id]
 export const DELETE: RequestHandler = async ({ params, cookies }) => {
-	if (cookies.get('ft_admin_session') !== 'authenticated') {
+	if (!isAdmin(cookies)) {
 		return json({ error: 'Unauthorised' }, { status: 401 });
 	}
 	const db = getDb();

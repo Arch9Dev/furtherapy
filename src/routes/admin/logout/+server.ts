@@ -1,7 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { destroySession } from '$lib/sessions';
 
 export const POST: RequestHandler = async ({ cookies }) => {
-	cookies.delete('ft_admin_session', { path: '/' });
+	destroySession(cookies);
 	return json({ success: true });
 };

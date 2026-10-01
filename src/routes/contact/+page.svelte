@@ -81,7 +81,7 @@
 					<dl>
 						<div class="row">
 							<dt>Telephone</dt>
-							<dd><a href="tel:02114411722">021 144 1722</a></dd>
+							<dd><a href="tel:0211441722">021 144 1722</a></dd>
 						</div>
 						<div class="row">
 							<dt>Email</dt>

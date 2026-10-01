@@ -17,7 +17,7 @@
 <footer class="site-footer">
 	<div class="footer-inner">
 		<div class="footer-brand">
-			<img src="logo_white.png" alt="FurTherapy" class="footer-logo" />
+			<img src="/logo_white.png" alt="FurTherapy" class="footer-logo" />
 			<p>Canine Massage &amp; Bodywork</p>
 		</div>
 
@@ -30,7 +30,7 @@
 		</nav>
 
 		<div class="footer-contact">
-			<a href="tel:02114411722">021 144 1722</a>
+			<a href="tel:0211441722">021 144 1722</a>
 			<a href="mailto:fur.therapymassage@gmail.com">fur.therapymassage@gmail.com</a>
 			<span>Mission Bay, Auckland</span>
 		</div>

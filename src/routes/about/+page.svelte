@@ -108,8 +108,7 @@
 					</div>
 					<h3>Academic Background</h3>
 					<p>
-						Health Science, Homeopathy, Graduate Diploma in Teaching, Conservation &amp;
-						Environmental Science
+						Graduate Diploma in Teaching, as well as a Bachelor of Health Science, Foundation Certificate in Homeopathy & Diploma in Dive & Outdoor Recreation
 					</p>
 				</article>
 			</div>

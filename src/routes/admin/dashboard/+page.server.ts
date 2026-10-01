@@ -1,9 +1,10 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getDb } from '$lib/db';
+import { isAdmin } from '$lib/sessions';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-	if (cookies.get('ft_admin_session') !== 'authenticated') {
+	if (!isAdmin(cookies)) {
 		throw redirect(302, '/admin');
 	}
 
