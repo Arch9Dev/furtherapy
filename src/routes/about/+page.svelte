@@ -103,12 +103,16 @@
 					<p>300-Hour Hands-On Canine Massage Mentorship Program - New Zealand</p>
 				</article>
 				<article class="cred-card">
-					<div class="cred-image cred-text" aria-hidden="true">
-						<span>Academic</span>
+					<div class="cred-image">
+						<img
+							src="/academic.jpg"
+							alt="University of Auckland Graduate Diploma in Teaching (Early Childhood Education)"
+						/>
 					</div>
 					<h3>Academic Background</h3>
 					<p>
-						Graduate Diploma in Teaching, as well as a Bachelor of Health Science, Foundation Certificate in Homeopathy & Diploma in Dive & Outdoor Recreation
+						Health Science, Homeopathy, Graduate Diploma in Teaching, Conservation &amp;
+						Environmental Science
 					</p>
 				</article>
 			</div>
@@ -230,17 +234,6 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-	}
-	.cred-text {
-		background: var(--color-orange-tint);
-		border: 1px solid rgba(246, 139, 31, 0.35);
-	}
-	.cred-text span {
-		font-size: 1.6rem;
-		font-weight: 800;
-		color: var(--color-orange);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
 	}
 	.cred-card h3 {
 		color: var(--color-orange);

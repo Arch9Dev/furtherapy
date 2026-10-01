@@ -3,6 +3,9 @@ export const SERVICE_DURATIONS: Record<string, number> = {
 	return_visit: 45
 };
 
+/** Minimum gap (minutes) between the end of one session and the start of the next. */
+export const BUFFER_MINUTES = 60;
+
 export const SERVICE_LABELS: Record<string, string> = {
 	first_visit: 'First Visit (60 min)',
 	return_visit: 'Return Visit (45 min)'
@@ -34,4 +37,28 @@ export function formatTime(t: string): string {
 	const ampm = h >= 12 ? 'pm' : 'am';
 	const hour = h % 12 || 12;
 	return `${hour}:${m.toString().padStart(2, '0')}${ampm}`;
+}
+
+export function toMinutes(t: string): number {
+	const [h, m] = t.split(':').map(Number);
+	return h * 60 + m;
+}
+
+/**
+ * True if a session starting at `time` would keep at least BUFFER_MINUTES
+ * between itself and every already-booked session on the same day.
+ */
+export function isSlotFree(
+	time: string,
+	service: string,
+	booked: { time: string; service: string }[],
+	buffer: number = BUFFER_MINUTES
+): boolean {
+	const start = toMinutes(time);
+	const end = start + (SERVICE_DURATIONS[service] ?? 60);
+	return booked.every((b) => {
+		const bStart = toMinutes(b.time);
+		const bEnd = bStart + (SERVICE_DURATIONS[b.service] ?? 60);
+		return start >= bEnd + buffer || end + buffer <= bStart;
+	});
 }

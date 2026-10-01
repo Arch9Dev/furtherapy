@@ -102,6 +102,9 @@
 		});
 		if (res.ok) {
 			bookings = bookings.map((b) => (b.id === id ? { ...b, status } : b));
+		} else {
+			const data = await res.json().catch(() => null);
+			alert(data?.error ?? 'Could not update this booking. Please try again.');
 		}
 		bookingActionLoading[id] = false;
 		bookingActionLoading = { ...bookingActionLoading };

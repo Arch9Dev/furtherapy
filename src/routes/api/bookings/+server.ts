@@ -1,7 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDb } from '$lib/db';
-import { generateSlots, SERVICE_DURATIONS } from '$lib/bookingHelpers';
+import { generateSlots, isSlotFree, SERVICE_DURATIONS } from '$lib/bookingHelpers';
+import { nzNow } from '$lib/nzTime';
 import { notifyAdminNewBooking } from '$lib/email';
 import { allow, clientIp } from '$lib/rateLimit';
 
@@ -22,13 +23,12 @@ export const GET: RequestHandler = async ({ url }) => {
 	const blockedSet = new Set(blockedRaw.map(r => r.date));
 
 	const approvedBookings = db.prepare(
-		`SELECT date, time FROM bookings WHERE status = 'approved' AND date LIKE ?`
-	).all(`${year}-${month.toString().padStart(2, '0')}%`) as { date: string; time: string }[];
+		`SELECT date, time, service FROM bookings WHERE status = 'approved' AND date LIKE ?`
+	).all(`${year}-${month.toString().padStart(2, '0')}%`) as { date: string; time: string; service: string }[];
 
-	const takenMap: Record<string, Set<string>> = {};
+	const takenMap: Record<string, { time: string; service: string }[]> = {};
 	for (const b of approvedBookings) {
-		if (!takenMap[b.date]) takenMap[b.date] = new Set();
-		takenMap[b.date].add(b.time);
+		(takenMap[b.date] ??= []).push({ time: b.time, service: b.service });
 	}
 
 	const daysInMonth = new Date(year, month, 0).getDate();
@@ -46,8 +46,8 @@ export const GET: RequestHandler = async ({ url }) => {
 		if (!dayRule || !dayRule.is_open || !dayRule.open_time || !dayRule.close_time) continue;
 
 		let daySlots = generateSlots(dayRule.open_time, dayRule.close_time, slotMinutes);
-		const taken = takenMap[dateStr] ?? new Set();
-		daySlots = daySlots.filter(s => !taken.has(s));
+		const taken = takenMap[dateStr] ?? [];
+		daySlots = daySlots.filter(s => isSlotFree(s, service, taken));
 
 		if (daySlots.length > 0) {
 			slots[dateStr] = daySlots;
@@ -60,29 +60,6 @@ export const GET: RequestHandler = async ({ url }) => {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[0-9+()\-\s]{6,30}$/;
-const TZ = 'Pacific/Auckland';
-
-/** Current date (YYYY-MM-DD) and minutes-since-midnight in Auckland. */
-function nzNow() {
-	const parts = Object.fromEntries(
-		new Intl.DateTimeFormat('en-CA', {
-			timeZone: TZ,
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hourCycle: 'h23'
-		})
-			.formatToParts(new Date())
-			.map((p) => [p.type, p.value])
-	);
-	return {
-		date: `${parts.year}-${parts.month}-${parts.day}`,
-		minutes: Number(parts.hour) * 60 + Number(parts.minute)
-	};
-}
-
 /** Day of week (0-6) for a YYYY-MM-DD string, or null if it isn't a real date. */
 function dayOfWeek(date: string): number | null {
 	const [y, m, d] = date.split('-').map(Number);
@@ -166,11 +143,11 @@ export const POST: RequestHandler = async (event) => {
 		return json({ error: 'That time is not available. Please choose another.' }, { status: 400 });
 	}
 
-	const conflict = db
-		.prepare(`SELECT id FROM bookings WHERE date = ? AND time = ? AND status = 'approved'`)
-		.get(date, time);
-	if (conflict) {
-		return json({ error: 'That slot has just been taken. Please choose another time.' }, { status: 409 });
+	const sameDay = db
+		.prepare(`SELECT time, service FROM bookings WHERE date = ? AND status = 'approved'`)
+		.all(date) as { time: string; service: string }[];
+	if (!isSlotFree(time, service, sameDay)) {
+		return json({ error: 'That time is no longer available. Please choose another time.' }, { status: 409 });
 	}
 
 	const result = db

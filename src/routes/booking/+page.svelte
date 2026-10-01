@@ -19,6 +19,7 @@
 	let calYear = new Date().getFullYear();
 	let calMonth = new Date().getMonth() + 1;
 	let availableDates: string[] = [];
+	let blockedDates: string[] = [];
 	let slots: Record<string, string[]> = {};
 	let calLoading = false;
 
@@ -28,6 +29,7 @@
 		const res = await fetch(`/api/bookings?year=${calYear}&month=${calMonth}&service=${service}`);
 		const data = await res.json();
 		availableDates = data.availableDates;
+		blockedDates = data.blockedDates ?? [];
 		slots = data.slots;
 		calLoading = false;
 	}
@@ -68,6 +70,14 @@
 		return availableDates.includes(dateStr(d));
 	}
 
+	// A date the admin has blocked out (shown in red). Past dates stay muted.
+	function isBlocked(d: number | null) {
+		if (!d) return false;
+		const today = new Date(); today.setHours(0,0,0,0);
+		if (new Date(calYear, calMonth - 1, d) < today) return false;
+		return blockedDates.includes(dateStr(d));
+	}
+
 	function selectDate(d: number | null) {
 		if (!isAvailable(d)) return;
 		selectedDate = dateStr(d!);
@@ -89,7 +99,7 @@
 				customer_type: customerType,
 				service,
 				name,
-				email: customerType === 'new' ? email : undefined,
+				email: email || undefined,
 				phone: customerType === 'new' ? phone : undefined,
 				dog_name: dogName,
 				date: selectedDate,
@@ -169,7 +179,7 @@
 					<div class="service-price">$150</div>
 				</button>
 				<button class="service-card" class:selected={service === 'return_visit'}
-					on:click={() => { service = 'return_visit'; step = 2; }}>
+					on:click={() => { service = 'return_visit'; customerType = 'returning'; step = 3; }}>
 					<div class="service-icon">💆</div>
 					<div class="service-name">Return Visit</div>
 					<div class="service-detail">Follow-up session · 45 minutes</div>
@@ -223,13 +233,19 @@
 					<label for="phone">Phone number *</label>
 					<input id="phone" type="tel" bind:value={phone} placeholder="021 000 0000" autocomplete="tel" />
 				</div>
+				{:else}
+				<div class="form-field">
+					<label for="email">Email address (optional)</label>
+					<input id="email" type="email" bind:value={email} placeholder="your@email.com" autocomplete="email" />
+					<small class="field-hint">For your booking confirmation and a reminder on the day.</small>
+				</div>
 				{/if}
 			</div>
 
 			<div class="step-actions">
-				<button class="back-btn" on:click={() => step = 2}>← Back</button>
+				<button class="back-btn" on:click={() => step = service === 'return_visit' ? 1 : 2}>← Back</button>
 				<button class="btn-primary"
-					disabled={!name || !dogName || (customerType === 'new' && (!email || !phone))}
+					disabled={!name || !dogName || (customerType === 'new' && (!email || !phone)) || (!!email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))}
 					on:click={() => { step = 4; loadCalendar(); }}>
 					Choose a date →
 				</button>
@@ -258,12 +274,13 @@
 						<button
 							class="cal-cell"
 							class:available={isAvailable(cell)}
-							class:unavailable={cell && !isAvailable(cell)}
+							class:blocked={isBlocked(cell)}
+							class:unavailable={cell && !isAvailable(cell) && !isBlocked(cell)}
 							class:empty={!cell}
 							class:selected={cell && dateStr(cell) === selectedDate}
 							disabled={!isAvailable(cell)}
 							on:click={() => selectDate(cell)}
-							aria-label={cell ? `${cell} ${MONTHS[calMonth-1]}${isAvailable(cell) ? ', available' : ', unavailable'}` : undefined}
+							aria-label={cell ? `${cell} ${MONTHS[calMonth-1]}${isAvailable(cell) ? ', available' : isBlocked(cell) ? ', blocked out' : ', unavailable'}` : undefined}
 						>
 							{cell ?? ''}
 						</button>
@@ -273,6 +290,7 @@
 				<div class="cal-legend">
 					<span class="legend-dot available"></span> Available
 					<span class="legend-dot unavailable"></span> Unavailable
+					<span class="legend-dot blocked"></span> Blocked out
 				</div>
 			{/if}
 
@@ -318,8 +336,10 @@
 				<div class="summary-row"><span>Time</span><span>{formatTime(selectedTime)}</span></div>
 				<div class="summary-row"><span>Name</span><span>{name}</span></div>
 				<div class="summary-row"><span>Dog</span><span>{dogName}</span></div>
-				{#if customerType === 'new'}
+				{#if email}
 				<div class="summary-row"><span>Email</span><span>{email}</span></div>
+				{/if}
+				{#if customerType === 'new'}
 				<div class="summary-row"><span>Phone</span><span>{phone}</span></div>
 				{/if}
 				<div class="summary-row"><span>Client type</span>
@@ -427,6 +447,7 @@
 		font-size: 1rem; font-family: inherit; transition: border-color 0.2s;
 	}
 	.form-field input:focus { outline: none; border-color: #f68b1f; }
+	.field-hint { font-size: 0.8rem; color: #b7b7b7; }
 
 	/* ── Calendar ── */
 	.cal-header {
@@ -463,11 +484,16 @@
 	.cal-cell.available:hover { background: #3a9e6e4d; }
 	.cal-cell.selected { background: #f68b1f !important; color: #fff !important; border-color: #f68b1f !important; }
 	.cal-cell.unavailable { color: #3a3a3a; cursor: not-allowed; }
+	.cal-cell.blocked {
+		background: #e5484d26; color: #ff7b80; cursor: not-allowed;
+		border: 1px solid #e5484d4d;
+	}
 
 	.cal-legend { display: flex; gap: 1.25rem; font-size: 0.8rem; color: #888; margin-bottom: 1.25rem; align-items: center; }
 	.legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 4px; }
 	.legend-dot.available { background: #3a9e6e66; border: 1px solid #3a9e6e99; }
 	.legend-dot.unavailable { background: #2a2a2a; border: 1px solid #333; }
+	.legend-dot.blocked { background: #e5484d66; border: 1px solid #e5484d99; }
 
 	/* ── Time slots ── */
 	.time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 1.25rem 0 1.5rem; }

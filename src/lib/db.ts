@@ -64,6 +64,12 @@ function initSchema(db: Database.Database) {
 		CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings (status);
 	`);
 
+	// Migration: same-day reminder tracking
+	const bookingCols = db.prepare('PRAGMA table_info(bookings)').all() as { name: string }[];
+	if (!bookingCols.some((c) => c.name === 'reminder_sent')) {
+		db.exec('ALTER TABLE bookings ADD COLUMN reminder_sent INTEGER NOT NULL DEFAULT 0');
+	}
+
 	const count = (db.prepare('SELECT COUNT(*) as c FROM weekly_availability').get() as { c: number }).c;
 	if (count === 0) {
 		const insert = db.prepare(`

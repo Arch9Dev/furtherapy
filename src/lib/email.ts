@@ -65,6 +65,46 @@ export async function sendBookingConfirmation(booking: {
 	});
 }
 
+export async function sendBookingReminder(booking: {
+	name: string;
+	email: string;
+	dog_name: string;
+	service: string;
+	date: string;
+	time: string;
+}) {
+	const transport = createTransport();
+	const serviceLabel = booking.service === 'first_visit' ? 'First Visit (60 min)' : 'Return Visit (45 min)';
+	const [h, m] = booking.time.split(':').map(Number);
+	const ampm = h >= 12 ? 'pm' : 'am';
+	const formattedTime = `${h % 12 || 12}:${m.toString().padStart(2, '0')}${ampm}`;
+
+	await transport.sendMail({
+		from: `"FurTherapy" <${SMTP_USER}>`,
+		to: booking.email,
+		subject: `🐾 Reminder — ${booking.dog_name}'s massage today at ${formattedTime}`,
+		html: `
+			<div style="font-family: system-ui, sans-serif; max-width: 580px; margin: 0 auto; background: #1f1f1f; color: #fff; border-radius: 12px; overflow: hidden;">
+				<div style="background: #f68b1f; padding: 2rem; text-align: center;">
+					<h1 style="margin: 0; color: #fff; font-size: 1.6rem;">See you today! 🐾</h1>
+				</div>
+				<div style="padding: 2rem;">
+					<p style="font-size: 1.05rem; margin-bottom: 1.5rem;">Hi ${esc(booking.name)},</p>
+					<p style="color: #ccc; margin-bottom: 1.5rem;">Just a friendly reminder that <strong style="color:#fff;">${esc(booking.dog_name)}</strong> has a massage appointment today.</p>
+					<div style="background: #2a2a2a; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid #f68b1f;">
+						<table style="width:100%; border-collapse:collapse;">
+							<tr><td style="color:#888; padding: 0.35rem 0; width:120px;">Service</td><td style="color:#fff; font-weight:600;">${serviceLabel}</td></tr>
+							<tr><td style="color:#888; padding: 0.35rem 0;">Time</td><td style="color:#fff; font-weight:600;">${formattedTime}</td></tr>
+						</table>
+					</div>
+					<p style="color: #ccc; font-size: 0.9rem;">If anything has changed or you have any questions, reply to this email or call us on <a href="tel:0211441722" style="color:#f68b1f;">021 144 1722</a>.</p>
+					<p style="margin-top: 2rem; color: #888; font-size: 0.85rem;">— The FurTherapy team</p>
+				</div>
+			</div>
+		`
+	});
+}
+
 export async function sendBookingDeclined(booking: {
 	name: string;
 	email: string;
