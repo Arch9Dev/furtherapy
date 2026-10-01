@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { getDb } from '$lib/db';
 import { isAdmin } from '$lib/sessions';
 import { sendBookingConfirmation, sendBookingDeclined } from '$lib/email';
+import { isSlotFree, BUFFER_MINUTES } from '$lib/bookingHelpers';
+import { nzNow } from '$lib/nzTime';
 
 export const PATCH: RequestHandler = async ({ params, request, cookies }) => {
 	if (!isAdmin(cookies)) {
@@ -21,10 +23,34 @@ export const PATCH: RequestHandler = async ({ params, request, cookies }) => {
 		service: string; date: string; time: string;
 	} | undefined;
 
-	db.prepare('UPDATE bookings SET status = ? WHERE id = ?').run(status, params.id);
+	if (!booking) {
+		return json({ error: 'Booking not found.' }, { status: 404 });
+	}
+
+	if (status === 'approved') {
+		const others = db
+			.prepare(`SELECT time, service FROM bookings WHERE date = ? AND status = 'approved' AND id != ?`)
+			.all(booking.date, booking.id) as { time: string; service: string }[];
+		if (!isSlotFree(booking.time, booking.service, others)) {
+			return json(
+				{
+					error: `This booking overlaps, or is less than ${BUFFER_MINUTES} minutes from, another approved appointment that day.`
+				},
+				{ status: 409 }
+			);
+		}
+	}
+
+	// A booking approved on the day itself gets the confirmation email only, not a reminder as well.
+	const reminderSent = status === 'approved' && booking.date === nzNow().date ? 1 : 0;
+	db.prepare('UPDATE bookings SET status = ?, reminder_sent = ? WHERE id = ?').run(
+		status,
+		reminderSent,
+		params.id
+	);
 
 	// Email customer if they have an email address
-	if (booking?.email) {
+	if (booking.email) {
 		if (status === 'approved') {
 			sendBookingConfirmation({
 				name: booking.name,
