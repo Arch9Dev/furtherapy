@@ -110,6 +110,38 @@
 		</div>
 	</section>
 
+	<section class="section" aria-labelledby="nbcaam-heading">
+		<div class="container credential">
+			<div class="credential-logo">
+				<img
+					src="/nbcaam-logo.png"
+					alt="NBCAAM - National Board of Certification for Animal Acupressure &amp; Massage"
+					loading="lazy"
+				/>
+			</div>
+			<div>
+				<p class="eyebrow">Certification</p>
+				<h2 id="nbcaam-heading">About NBCAAM</h2>
+				<div class="prose lead">
+					<p>
+						The National Board of Certification for Animal Acupressure &amp; Massage (NBCAAM) sets
+						the standards for entry into the field of animal massage. It provides certification
+						exams for canine and equine acupressure and massage, so that animal owners can be
+						confident their practitioner is highly trained.
+					</p>
+				</div>
+				<a
+					href="https://www.nbcaam.org/"
+					class="btn-secondary"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Visit NBCAAM
+				</a>
+			</div>
+		</div>
+	</section>
+
 	<section class="cta-band" aria-labelledby="edu-cta-heading">
 		<h2 id="edu-cta-heading">Interested in learning with FurTherapy?</h2>
 		<p>Get in touch to ask about education and mentorship.</p>
@@ -222,13 +254,38 @@
 		margin-top: 1.75rem;
 	}
 
+	.credential {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 3.5rem;
+		align-items: center;
+	}
+	.credential-logo {
+		background: #fff;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: 1.5rem;
+		box-shadow: var(--shadow-md);
+	}
+	.credential-logo img {
+		width: 100%;
+		max-width: 220px;
+		margin: 0 auto;
+		display: block;
+	}
+	.credential .btn-secondary {
+		margin-top: 1.75rem;
+	}
+
 	@media (max-width: 1024px) {
 		.split,
-		.mentor {
+		.mentor,
+		.credential {
 			grid-template-columns: 1fr;
 			gap: 2rem;
 		}
-		.mentor-image {
+		.mentor-image,
+		.credential-logo {
 			max-width: 460px;
 		}
 	}

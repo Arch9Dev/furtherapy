@@ -67,13 +67,13 @@
 					I began my professional career with a degree in Health Science and a certificate in
 					Homeopathy, followed by a Graduate Diploma in Teaching and a Conservation and
 					Environmental Science qualification. Having always had a love for animals, I decided to
-					follow my true passion — working with dogs and their people.
+					follow my true passion - working with dogs and their people.
 				</p>
 				<p>
 					When my own dogs began to face age-related health issues including arthritis, ligament
 					injuries, and immune disorders, my desire to help them encouraged me to research
 					restorative and preventative care. The positive effects I saw in my own dogs far exceeded
-					my expectations, and I wanted all dogs to experience this — and for pet parents to feel
+					my expectations, and I wanted all dogs to experience this - and for pet parents to feel
 					empowered to support their furry family members too.
 				</p>
 			</div>
@@ -93,14 +93,14 @@
 						<img src="/nbcaam.png" alt="NBCAAM National Certification in Canine Massage" />
 					</div>
 					<h3>NBCAAM Certified</h3>
-					<p>National Certification in Canine Massage — Certificate No. M-309-20</p>
+					<p>National Certification in Canine Massage - Certificate No. M-309-20</p>
 				</article>
 				<article class="cred-card">
 					<div class="cred-image">
 						<img src="/instructor.jpg" alt="Canis Bodyworks Certificate of Completion" />
 					</div>
 					<h3>Canis Bodyworks Instructor</h3>
-					<p>300-Hour Hands-On Canine Massage Mentorship Program — New Zealand</p>
+					<p>300-Hour Hands-On Canine Massage Mentorship Program - New Zealand</p>
 				</article>
 				<article class="cred-card">
 					<div class="cred-image cred-text" aria-hidden="true">
@@ -166,7 +166,7 @@
 					{#each testimonials as t}
 						<figure class="testimonial">
 							<blockquote>“{t.quote}”</blockquote>
-							<figcaption>— {t.client} &amp; {t.pet}</figcaption>
+							<figcaption>- {t.client} &amp; {t.pet}</figcaption>
 						</figure>
 					{/each}
 				</div>

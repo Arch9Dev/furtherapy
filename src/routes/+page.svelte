@@ -1,13 +1,13 @@
 <script lang="ts">
 	
-	// Three source photos, animated as a seamless looping strip further down.
-	const slides = ['Dog1.png', 'Dog2.png', 'Dog3.png'];
+	// Source photos, animated as a seamless looping strip further down.
+	const slides = ['Dog1.png', 'Dog2.png', 'Dog3.png', 'Dog4.jpg', 'Dog5.jpg'];
 
 	const services = [
 		{
 			title: 'Relaxation Bodywork',
 			description:
-				"Therapeutic massage that stimulates the body's natural rest-and-recovery response — helping relieve pain and supporting physical, emotional and mental wellbeing.",
+				"Therapeutic massage that stimulates the body's natural rest-and-recovery response - helping relieve pain and supporting physical, emotional and mental wellbeing.",
 			image: 'Relaxation.jpg'
 		},
 		{
@@ -19,14 +19,14 @@
 		{
 			title: 'Lymphatic Massage',
 			description:
-				'A very gentle technique that encourages healthy lymphatic flow — supportive before and after surgery, injury or illness.',
+				'A very gentle technique that encourages healthy lymphatic flow - supportive before and after surgery, injury or illness.',
 			image: 'Lymphatic.jpg'
 		},
 		{
 			title: 'Orthopaedic Friction',
 			description:
 				'A rehabilitation technique for tendon and ligament injuries, helping reduce scar tissue formation and support healing.',
-			image: null
+			image: 'orthopaedic.jpg'
 		}
 	];
 
@@ -48,7 +48,7 @@
 				<p class="eyebrow">Canine Massage &amp; Bodywork · Mission Bay, Auckland</p>
 				<h1 id="hero-heading">Helping dogs move better, feel better, and live better.</h1>
 				<p class="hero-sub">
-					Professional canine massage and bodywork, tailored to your dog's individual needs —
+					Professional canine massage and bodywork, tailored to your dog's individual needs -
 					provided by a Nationally Board Certified Practitioner (NBCAAM).
 				</p>
 				<div class="hero-actions">
@@ -65,9 +65,6 @@
 			<div class="hero-visual">
 				<div class="hero-image-main">
 					<img src="Dog3.png" alt="A dog receiving therapeutic bodywork from FurTherapy" />
-				</div>
-				<div class="hero-image-accent">
-					<img src="Dog1.png" alt="" aria-hidden="true" />
 				</div>
 				<div class="hero-badge">
 					<img src="nbcaam.png" alt="" aria-hidden="true" />
@@ -90,7 +87,7 @@
 			</div>
 			<div class="value-item">
 				<span class="value-icon" aria-hidden="true">✓</span>
-				<span>Mobile Service — Mission Bay &amp; Beyond</span>
+				<span>Mobile Service - Mission Bay &amp; Beyond</span>
 			</div>
 		</div>
 	</section>
@@ -103,16 +100,16 @@
 			</div>
 			<div class="intro-copy">
 				<p class="eyebrow">What Is FurTherapy?</p>
-				<h2 id="intro-heading">More than massage — it's care designed around your dog.</h2>
+				<h2 id="intro-heading">More than massage - it's care designed around your dog.</h2>
 				<p>
 					FurTherapy provides therapeutic massage and bodywork for dogs using deliberate, focused
-					touch. Through a range of movements at varying pressures, soft tissues — including
-					muscles, tendons, ligaments, fascia and connective tissue — are worked to support
+					touch. Through a range of movements at varying pressures, soft tissues - including
+					muscles, tendons, ligaments, fascia and connective tissue - are worked to support
 					healing and wellbeing.
 				</p>
 				<p>
 					Every dog is treated as an individual. Sessions are shaped by their history, their
-					movement, and how they're feeling on the day — never a one-size-fits-all routine.
+					movement, and how they're feeling on the day - never a one-size-fits-all routine.
 				</p>
 			</div>
 		</div>
@@ -157,7 +154,7 @@
 				<p class="eyebrow">Who It's For</p>
 				<h2 id="who-heading">Could FurTherapy be right for your dog?</h2>
 				<p class="section-sub">
-					Therapeutic massage can be used at all life stages — beneficial for sporting dogs,
+					Therapeutic massage can be used at all life stages - beneficial for sporting dogs,
 					senior pets, rescue animals in rehabilitation, and any dog you want to keep healthy,
 					happy and well-balanced.
 				</p>
@@ -224,12 +221,13 @@
 	<!-- ============================ PHOTO SCROLLER ============================ -->
 	<section class="hero-image" aria-label="Photo gallery of dogs treated by FurTherapy">
 		<div class="slider">
-			<div class="slide-track">
-				{#each slides as src}
-					<div class="slide"><img {src} alt="" /></div>
-				{/each}
-				{#each slides as src}
-					<div class="slide" aria-hidden="true"><img {src} alt="" /></div>
+			<div class="slide-track" style="--slide-count: {slides.length}">
+				{#each [0, 1, 2, 3] as copy}
+					{#each slides as src}
+						<div class="slide" aria-hidden={copy > 0 ? 'true' : undefined}>
+							<img {src} alt="" />
+						</div>
+					{/each}
 				{/each}
 			</div>
 		</div>
@@ -251,8 +249,8 @@
 					Mentorship Program within New Zealand.
 				</p>
 				<ul class="credential-list">
-					<li>NBCAAM Certified — National Certification in Canine Massage</li>
-					<li>Canis Bodyworks Instructor — 300-Hour Hands-On Mentorship Program, NZ</li>
+					<li>NBCAAM Certified - National Certification in Canine Massage</li>
+					<li>Canis Bodyworks Instructor - 300-Hour Hands-On Mentorship Program, NZ</li>
 					<li>Health Science, Homeopathy &amp; Graduate Diploma in Teaching background</li>
 				</ul>
 				<a href="/about" class="btn-secondary">
@@ -494,24 +492,6 @@
 		box-shadow: var(--shadow-lg);
 	}
 	.hero-image-main img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-	}
-
-	.hero-image-accent {
-		position: absolute;
-		right: 0;
-		bottom: -1.5rem;
-		width: 42%;
-		aspect-ratio: 1 / 1;
-		border-radius: var(--radius-md);
-		overflow: hidden;
-		border: 5px solid var(--color-bg);
-		box-shadow: var(--shadow-md);
-	}
-	.hero-image-accent img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -800,16 +780,19 @@
 
 	/*
 		Seamless-loop math:
-		There are exactly 3 source images (`slides`), rendered twice in the
-		markup (original set + identical duplicate set) = 6 slides total.
-		The track must be exactly 2 set-widths wide, and the animation must
-		translate by exactly 1 set-width (3 slides), so the duplicate set
-		lands precisely where the original set started — no gap, no jump.
+		The `slides` array is rendered in 4 identical sets. The animation
+		translates by exactly 1 set-width (--slide-count slides), so the next set
+		lands precisely where the previous one started - no gap, no jump.
+		The track must always extend past the right edge of the viewport at the
+		end of the animation, i.e. (sets - 1) * set-width >= viewport width.
+		Adding or removing photos only needs a change to the `slides` array;
+		--slide-count is set from it in the markup. Duration scales with the
+		count so scroll speed stays constant (5s per slide).
 	*/
 	.slide-track {
 		display: flex;
-		width: calc((var(--slide-w) + var(--slide-gap)) * 6);
-		animation: scroll-slides 25s linear infinite;
+		width: max-content;
+		animation: scroll-slides calc(var(--slide-count) * 5s) linear infinite;
 	}
 
 	.slide {
@@ -838,7 +821,7 @@
 			transform: translateX(0);
 		}
 		to {
-			transform: translateX(calc((var(--slide-w) + var(--slide-gap)) * -3));
+			transform: translateX(calc((var(--slide-w) + var(--slide-gap)) * var(--slide-count) * -1));
 		}
 	}
 
@@ -932,10 +915,14 @@
 		flex-direction: column;
 	}
 	.service-card-image {
+		position: relative;
 		aspect-ratio: 4 / 3;
+		overflow: hidden;
 		background: var(--color-surface-alt);
 	}
 	.service-card-image img {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -1195,7 +1182,7 @@
 			padding: 4rem 1.5rem;
 		}
 
-		/* Slider — override custom props for tablet */
+		/* Slider - override custom props for tablet */
 		.slide-track {
 			--slide-w: 240px;
 			--slide-gap: 1.5rem;

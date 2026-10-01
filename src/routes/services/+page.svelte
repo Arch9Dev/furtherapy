@@ -34,7 +34,7 @@
 				'A rehabilitation massage for tendon and ligament injuries that helps reduce scar tissue.',
 			description:
 				"Orthopaedic Friction is a form of rehabilitation massage used to treat injuries to tendons and ligaments. It was first described by orthopaedic surgeon Dr. James Cyriax in the 1940's. He discovered that it is effective in reducing scar tissue formation following trauma. Adhesions (scarring) can result in limited movement and cause pain throughout the body. This technique creates a controlled inflammatory response, encouraging nutrient-rich blood to the tissues. This increase in oxygen promotes healing and provides an analgesic effect.",
-			image: null
+			image: 'orthopaedic.jpg'
 		}
 	];
 </script>
